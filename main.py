@@ -1,10 +1,12 @@
 import chess
 import random
 import time
-
+from agents.greedy_agent import GreedyAgent
 
 def main():
     board = chess.Board()
+    my_greedy_agent = GreedyAgent('w')
+    print(my_greedy_agent.get_move(board))
     legal_moves = board.legal_moves
     while not board.is_game_over():
         rand_move = random.choice([move for move in legal_moves])
