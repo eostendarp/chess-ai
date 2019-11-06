@@ -1,5 +1,6 @@
 import chess
 import copy
+from agents.random_agent import RandAgent
 
 
 class ChessGame:
@@ -14,10 +15,16 @@ class ChessGame:
         runs a single game of chess between two agents
         :return: the result of the game
         '''
+        end_state = {}
         while not self.board.is_game_over():
             self.play_round()
         result = self.board.result()
-        end_state = {self.agent1.name: result.split('-')[0], self.agent2.name: result.split('-')[1]}
+        state = result.split("-")
+        if state[0] == '1/2':
+            end_state = {self.agent1.color: 0, self.agent2.color: 0, 'Tie': 1}
+        else:
+            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
+
         return end_state
 
     def play_round(self):
@@ -26,7 +33,8 @@ class ChessGame:
 
     def play_move(self, agent):
         chosen_move = agent.get_move(copy.deepcopy(self.board))
-        self.board.push_uci(chosen_move.uci())
+        if chosen_move is not None:
+            self.board.push_uci(chosen_move.uci())
 
 
 def compare_agents(agent1, agent2, num_games):
@@ -37,15 +45,22 @@ def compare_agents(agent1, agent2, num_games):
     :param num_games: (int) the number of games to be played
     :return:
     '''
-    tally = {agent1.name: 0, agent2: 0}
+    tally = {agent1.color: 0, agent2.color: 0, 'Tie': 0}
     for i in range(num_games):
         if i % 2 == 0:
             game = ChessGame(agent1, agent2)
         else:
             game = ChessGame(agent2, agent1)
         results = game.play_game()
-        tally[agent1.name] += results[agent1.name]
-        tally[agent2.name] += results[agent2.name]
+        tally[agent1.color] += results[agent1.color]
+        tally[agent2.color] += results[agent2.color]
+        tally['Tie'] += results['Tie']
 
     return tally
 
+
+def main():
+    tally = compare_agents(RandAgent("W"), RandAgent("B"), 5)
+    print(tally)
+    
+main()
