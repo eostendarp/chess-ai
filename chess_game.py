@@ -61,13 +61,15 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         tally[agent1.color] += results[agent1.color]
         tally[agent2.color] += results[agent2.color]
         tally['Tie'] += results['Tie']
-        print(str(game.board)+'\n')
+        if display_moves:
+            print(str(game.board)+"\n")
 
     return tally
 
 
-def main():
-    tally = compare_agents(GreedyAgent("B"), GreedyAgent("W"), 1, True)
+def run():
+    print("Comparing Agents")
+    tally = compare_agents(RandAgent("B"), RandAgent("W"), 100)
     print(tally)
     
-main()
+run()

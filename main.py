@@ -9,6 +9,7 @@ def main():
     print(my_greedy_agent.get_move(board))
     legal_moves = board.legal_moves
     while not board.is_game_over():
+        print("peepee poopoo")
         rand_move = random.choice([move for move in legal_moves])
         board.push_uci(rand_move.uci())
         print(str(board) + '\n')
