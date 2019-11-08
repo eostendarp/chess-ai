@@ -1,6 +1,7 @@
 import chess
 import copy
 from agents.random_agent import RandAgent
+from agents.greedy_agent import GreedyAgent
 
 
 class ChessGame:
@@ -27,7 +28,7 @@ class ChessGame:
 
         return end_state
 
-    def play_round(self):
+    def play_round(self, display_move=False):
         self.play_move(self.agent1)
         self.play_move(self.agent2)
 
@@ -37,7 +38,7 @@ class ChessGame:
             self.board.push_uci(chosen_move.uci())
 
 
-def compare_agents(agent1, agent2, num_games):
+def compare_agents(agent1, agent2, num_games, display_moves=False):
     '''
     plays multiple games to compare the two agents
     :param agent1: an agent to play a chess game
@@ -60,7 +61,7 @@ def compare_agents(agent1, agent2, num_games):
 
 
 def main():
-    tally = compare_agents(RandAgent("W"), RandAgent("B"), 5)
+    tally = compare_agents(GreedyAgent("B"), GreedyAgent("W"), 1, True)
     print(tally)
     
 main()

@@ -10,8 +10,11 @@ class GreedyAgent(BaseAgent):
 
     def get_move(self, board):
         boardcopy = deepcopy(board)
-        for move in board.legal_moves:
-            if boardcopy.is_capture(move):
-                return move
+        if not board.is_game_over():
+            for move in board.legal_moves:
+                if boardcopy.is_capture(move):
+                    return move
+            else:
+                return choice([move for move in board.legal_moves])
         else:
-            return choice([move for move in board.legal_moves])
+            return None
