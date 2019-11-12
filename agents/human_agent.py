@@ -7,7 +7,6 @@ class HumanAgent(BaseAgent):
 
     def get_move(self, board):
         while True:
-            print(board)
             print("Enter move: ")
             input_ = input()
             try:

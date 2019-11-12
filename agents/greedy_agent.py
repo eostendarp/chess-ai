@@ -18,3 +18,4 @@ class GreedyAgent(BaseAgent):
                 return choice([move for move in board.legal_moves])
         else:
             return None
+

@@ -1,7 +1,9 @@
 import chess
 import copy
+import time
 from agents.random_agent import RandAgent
 from agents.greedy_agent import GreedyAgent
+from agents.human_agent import HumanAgent
 
 
 class ChessGame:
@@ -29,13 +31,19 @@ class ChessGame:
         return end_state
 
     def play_round(self, display_move=False):
+        time.sleep(1)
+
         self.play_move(self.agent1)
         if display_move:
-            print(str(self.board) + "\n")
+            print(str(self.board.unicode(borders=True)) + "\n")
+
+        time.sleep(1)
 
         self.play_move(self.agent2)
         if display_move:
-            print(str(self.board) + "\n")
+            print(str(self.board.unicode(borders=True)) + "\n")
+
+        time.sleep(1)
 
     def play_move(self, agent):
         chosen_move = agent.get_move(copy.deepcopy(self.board))
@@ -57,19 +65,20 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
             game = ChessGame(agent1, agent2)
         else:
             game = ChessGame(agent2, agent1)
+        print(game.board.unicode(borders=True))
         results = game.play_game(display_moves=display_moves)
         tally[agent1.color] += results[agent1.color]
         tally[agent2.color] += results[agent2.color]
         tally['Tie'] += results['Tie']
         if display_moves:
-            print(str(game.board)+"\n")
+            print(str(game.board.unicode(borders=True))+"\n")
 
     return tally
 
 
 def run():
     print("Comparing Agents")
-    tally = compare_agents(RandAgent("B"), RandAgent("W"), 100)
+    tally = compare_agents(GreedyAgent("B"), GreedyAgent("W"), 1, True)
     print(tally)
     
 run()
