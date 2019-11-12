@@ -1,7 +1,7 @@
 from agents.base_agent import BaseAgent
-from random import choice
 from copy import deepcopy
 from agents.heuristics import get_color_bool, get_opposing_color
+from random import shuffle
 
 
 class MiniMaxAgent(BaseAgent):
@@ -36,7 +36,9 @@ class MiniMaxAgent(BaseAgent):
         if current_depth == maximum_depth or board.is_game_over():
             return heuristic(board, self.color_bool)
 
-        possible_moves = board.legal_moves
+        possible_moves = [move for move in board.legal_moves]
+        shuffle(possible_moves)
+
         if max_turn:
             score = float('-inf')
             for move in possible_moves:
@@ -54,5 +56,7 @@ class MiniMaxAgent(BaseAgent):
                 board.pop()
 
             return score
+
+
 
 
