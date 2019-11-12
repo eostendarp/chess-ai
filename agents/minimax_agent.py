@@ -1,6 +1,7 @@
 from agents.base_agent import BaseAgent
 from random import choice
 from copy import deepcopy
+from agents.heuristics import get_color_bool, get_opposing_color
 
 
 class MiniMaxAgent(BaseAgent):
@@ -8,56 +9,50 @@ class MiniMaxAgent(BaseAgent):
         super().__init__(color)
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
+        self.color_bool = get_color_bool(self.color)
 
     def get_move(self, board):
         current_depth = 0
-        possible_moves = board.legal_moves()
-        best_move = possible_moves[0]
+        possible_moves = board.legal_moves
+        best_move = None
         best_score = float('-inf')
 
         for move in possible_moves:
-            copy_board = deepcopy(board)
-            copy_board.push_uci(move.uci())
-            score = max(best_score, self.minimax(copy_board, self.heuristic, False, current_depth, self.maximum_depth))
+            board.push_uci(move.uci())
+            score = self.minimax(board, self.heuristic, False, current_depth + 1, self.maximum_depth)
+            board.pop()
 
             if score > best_score:
+                print(score)
+                print(move)
                 best_score = score
                 best_move = move
 
-        print(best_move)
+
         return best_move
 
-    def minimax(self, board, heuristic, max_turn, current_depth=0, maximum_depth=4):
+    def minimax(self, board, heuristic, max_turn, current_depth, maximum_depth):
 
-        if current_depth == maximum_depth:
-            return -heuristic(board, self.color)
+        if current_depth == maximum_depth or board.is_game_over():
+            return heuristic(board, self.color_bool)
 
-        opp = get_opposing_color(self.color)
-
-        possible_moves = board.legal_moves()
+        possible_moves = board.legal_moves
         if max_turn:
             score = float('-inf')
             for move in possible_moves:
-                copy_board = deepcopy(board)
-                copy_board.push_uci(move.uci())
-                score = max(score, self.minimax(copy_board, heuristic, not max_turn, current_depth + 1, maximum_depth))
+                board.push_uci(move.uci())
+                score = max(score, self.minimax(board, heuristic, not max_turn, current_depth + 1, maximum_depth))
+                board.pop()
 
             return score
 
         else:
             score = float('inf')
             for move in possible_moves:
-                copy_board = deepcopy(board)
-                copy_board.push_uci(move.uci())
-                score = min(score, self.minimax(copy_board, heuristic, not max_turn, current_depth + 1, maximum_depth))
+                board.push_uci(move.uci())
+                score = min(score, self.minimax(board, heuristic, not max_turn, current_depth + 1, maximum_depth))
+                board.pop()
 
             return score
 
-        return 0
 
-
-def get_opposing_color(color):
-    if color == "W":
-        return "B"
-    elif color == "B":
-        return "W"

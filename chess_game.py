@@ -2,6 +2,8 @@ import chess
 import copy
 from agents.random_agent import RandAgent
 from agents.greedy_agent import GreedyAgent
+from agents.minimax_agent import MiniMaxAgent
+from agents.heuristics import piece_value_heuristic
 
 
 class ChessGame:
@@ -31,6 +33,7 @@ class ChessGame:
     def play_round(self):
         self.play_move(self.agent1)
         self.play_move(self.agent2)
+        print(str(self.board) + '\n')
 
     def play_move(self, agent):
         chosen_move = agent.get_move(copy.deepcopy(self.board))
@@ -48,10 +51,14 @@ def compare_agents(agent1, agent2, num_games):
     '''
     tally = {agent1.color: 0, agent2.color: 0, 'Tie': 0}
     for i in range(num_games):
+        print("GAME", i, "BEGIN")
         if i % 2 == 0:
             game = ChessGame(agent1, agent2)
         else:
             game = ChessGame(agent2, agent1)
+
+
+
         results = game.play_game()
         tally[agent1.color] += results[agent1.color]
         tally[agent2.color] += results[agent2.color]
@@ -61,7 +68,7 @@ def compare_agents(agent1, agent2, num_games):
 
 
 def main():
-    tally = compare_agents(RandAgent("W"), GreedyAgent("B"), 5)
+    tally = compare_agents(MiniMaxAgent("W", piece_value_heuristic, 3), GreedyAgent("B"), 1)
     print(tally)
     
 main()
