@@ -2,8 +2,8 @@ import chess
 import copy
 import time
 from agents.random_agent import RandAgent
-from agents.greedy_agent import GreedyAgent
 from agents.human_agent import HumanAgent
+from agents.greedy_agent import GreedyAgent
 
 
 class ChessGame:
@@ -29,6 +29,7 @@ class ChessGame:
             end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
 
         return end_state
+
 
     def play_round(self, display_move=False):
         time.sleep(1)
