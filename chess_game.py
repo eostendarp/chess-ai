@@ -98,6 +98,6 @@ def run():
     print("Comparing Agents")
     tally, avg = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), GreedyAgent(False), 1, False)
     print(tally)
-    print("Average Decision Times:",avg)
+    print("Average Decision Times:", avg)
 
 run()
