@@ -38,7 +38,6 @@ class MiniMaxAgent(BaseAgent):
 
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
-
         if max_turn:
             score = float('-inf')
             for move in possible_moves:

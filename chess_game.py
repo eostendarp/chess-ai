@@ -33,12 +33,12 @@ class ChessGame:
     def play_round(self):
         self.play_move(self.agent1)
         self.play_move(self.agent2)
-        print(str(self.board) + '\n')
 
     def play_move(self, agent):
         chosen_move = agent.get_move(copy.deepcopy(self.board))
         if chosen_move is not None:
             self.board.push_uci(chosen_move.uci())
+            print(str(self.board) + '\n')
 
 
 def compare_agents(agent1, agent2, num_games):
