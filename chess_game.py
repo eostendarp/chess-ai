@@ -28,10 +28,10 @@ class ChessGame:
         if state[0] == '1/2':
             end_state = {self.agent1.color: 0, self.agent2.color: 0, 'Tie': 1}
         else:
-            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
+            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]),
+                         'Tie': 0}
 
         return end_state
-
 
     def play_round(self, display_move=False):
         time.sleep(1)
@@ -57,6 +57,7 @@ class ChessGame:
 def compare_agents(agent1, agent2, num_games, display_moves=False):
     '''
     plays multiple games to compare the two agents
+    :param display_moves: Displays board or not
     :param agent1: an agent to play a chess game
     :param agent2: an agent to play a chess gam
     :param num_games: (int) the number of games to be played
@@ -74,14 +75,15 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         tally[agent2.color] += results[agent2.color]
         tally['Tie'] += results['Tie']
         if display_moves:
-            print(str(game.board.unicode(borders=True))+"\n")
+            print(str(game.board.unicode(borders=True)) + "\n")
 
     return tally
 
 
 def run():
     print("Comparing Agents")
-    tally = compare_agents(GreedyAgent("B"), GreedyAgent("W"), 1, True)
+    tally = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), GreedyAgent(False), 1, True)
     print(tally)
-    
+
+
 run()
