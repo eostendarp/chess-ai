@@ -4,6 +4,8 @@ import time
 from agents.random_agent import RandAgent
 from agents.human_agent import HumanAgent
 from agents.greedy_agent import GreedyAgent
+from agents.minimax_agent import MiniMaxAgent
+from agents.heuristics import piece_value_heuristic
 
 
 class ChessGame:
