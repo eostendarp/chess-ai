@@ -59,25 +59,3 @@ class AlphaBetaAgent(BaseAgent):
 
 
         return best_score
-
-
-        # if max_turn:
-        #     score = float('-inf')
-        #     for move in possible_moves:
-        #         board.push_uci(move.uci())
-        #         score = max(score, self.alpha_beta(board, heuristic, alpha, beta, not max_turn, current_depth + 1, maximum_depth))
-        #         if score >= beta:
-        #             return score
-        #         alpha = max(alpha, score)
-        #
-        # else:
-        #     score = float('inf')
-        #     for move in possible_moves:
-        #         board.push_uci(move.uci())
-        #         score = min(score, self.alpha_beta(board, heuristic, alpha, beta, not max_turn, current_depth + 1, maximum_depth))
-        #         if score <= alpha:
-        #             return score
-        #         beta = min(beta, alpha)
-        #
-        # board.pop()
-        # return score
