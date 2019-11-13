@@ -6,6 +6,7 @@ from agents.random_agent import RandAgent
 from agents.human_agent import HumanAgent
 from agents.greedy_agent import GreedyAgent
 from agents.minimax_agent import MiniMaxAgent
+from agents.alpha_beta_agent import AlphaBetaAgent
 from agents.heuristics import piece_value_heuristic
 
 
@@ -54,7 +55,7 @@ class ChessGame:
             print(str(self.board.unicode(borders=True)) + "\n")
 
     def play_move(self, agent):
-        chosen_move = agent.get_move(copy.deepcopy(self.board))
+        chosen_move = agent.get_move(self.board.copy())
         if chosen_move is not None:
             self.board.push_uci(chosen_move.uci())
 
@@ -96,7 +97,7 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(MiniMaxAgent("B", piece_value_heuristic, 3), GreedyAgent("W"), 1, False)
+    tally, avg = compare_agents(AlphaBetaAgent("B", piece_value_heuristic, 3), MiniMaxAgent("W", piece_value_heuristic, 3), 1, True)
     print(tally)
     print("Average Decision Times:",avg)
     
