@@ -1,6 +1,7 @@
 import chess
 import copy
 import time
+from datetime import datetime
 from agents.random_agent import RandAgent
 from agents.human_agent import HumanAgent
 from agents.greedy_agent import GreedyAgent
@@ -14,6 +15,8 @@ class ChessGame:
         self.agent1 = agent1
         self.agent2 = agent2
         self.board = chess.Board()
+        self.total_move_times = {agent1.color: 0, agent2.color: 0}
+        self.moves_made = {agent1.color: 0, agent2.color: 0}
 
     def play_game(self, display_moves=False):
         '''
@@ -28,25 +31,26 @@ class ChessGame:
         if state[0] == '1/2':
             end_state = {self.agent1.color: 0, self.agent2.color: 0, 'Tie': 1}
         else:
-            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]),
-                         'Tie': 0}
+            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
 
         return end_state
 
     def play_round(self, display_move=False):
-        time.sleep(1)
-
+        start = datetime.utcnow()
         self.play_move(self.agent1)
+        self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
+        self.moves_made[self.agent1.color] += 1
+
         if display_move:
             print(str(self.board.unicode(borders=True)) + "\n")
 
-        time.sleep(1)
-
+        start = datetime.utcnow()
         self.play_move(self.agent2)
+        self.total_move_times[self.agent2.color] += (datetime.utcnow() - start).total_seconds()
+        self.moves_made[self.agent2.color] += 1
+
         if display_move:
             print(str(self.board.unicode(borders=True)) + "\n")
-
-        time.sleep(1)
 
     def play_move(self, agent):
         chosen_move = agent.get_move(copy.deepcopy(self.board))
@@ -63,27 +67,37 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
     :param num_games: (int) the number of games to be played
     :return:
     '''
+    average_move_time = {agent1.color: 0, agent2.color: 0}
     tally = {agent1.color: 0, agent2.color: 0, 'Tie': 0}
     for i in range(num_games):
         if i % 2 == 0:
             game = ChessGame(agent1, agent2)
         else:
             game = ChessGame(agent2, agent1)
-        print(game.board.unicode(borders=True))
+        if display_moves:
+            print(game.board.unicode(borders=True))
+
         results = game.play_game(display_moves=display_moves)
+
         tally[agent1.color] += results[agent1.color]
         tally[agent2.color] += results[agent2.color]
         tally['Tie'] += results['Tie']
-        if display_moves:
-            print(str(game.board.unicode(borders=True)) + "\n")
 
-    return tally
+        for symbol in average_move_time.keys():
+            average_move_time[symbol] += (game.total_move_times[symbol] / game.moves_made[symbol])
+
+        if display_moves:
+            print(str(game.board.unicode(borders=True))+"\n")
+
+
+
+    return tally, average_move_time
 
 
 def run():
     print("Comparing Agents")
-    tally = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), GreedyAgent(False), 1, True)
+    tally, avg = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), GreedyAgent(False), 1, False)
     print(tally)
-
+    print("Average Decision Times:",avg)
 
 run()
