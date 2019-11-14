@@ -36,7 +36,6 @@ class ChessGame:
 
         return end_state
 
-
     def play_round(self, display_move=False):
         start = datetime.utcnow()
         self.play_move(self.agent1)
@@ -63,6 +62,7 @@ class ChessGame:
 def compare_agents(agent1, agent2, num_games, display_moves=False):
     '''
     plays multiple games to compare the two agents
+    :param display_moves: Displays board or not
     :param agent1: an agent to play a chess game
     :param agent2: an agent to play a chess gam
     :param num_games: (int) the number of games to be played
@@ -100,5 +100,5 @@ def run():
     tally, avg = compare_agents(AlphaBetaAgent(True, combined, 3), MiniMaxAgent(False, combined, 3), 1, True)
     print(tally)
     print("Average Decision Times:",avg)
-    
+
 run()

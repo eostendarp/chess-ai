@@ -1,12 +1,14 @@
 """
 Add heuristics here
 """
+from chess import *
+from typing import Dict
 
 
-def piece_value_heuristic(board, color):
+def piece_value_heuristic(board: Board, color: bool) -> int:
     score = 0
     opponent = not color
-    board_size = 64
+    board_size: int = 64
 
     for square in range(0, board_size):
         current_piece = board.piece_at(square)
@@ -15,24 +17,15 @@ def piece_value_heuristic(board, color):
     return score
 
 
-def get_piece_value(piece, color):
+def get_piece_value(piece: Piece, color: bool) -> int:
     if piece is None:
         return 0
 
+    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 100}
+
     value = 0
 
-    if piece.symbol().upper() == "P":
-        value = 1
-    if piece.symbol().upper() == "N":
-        value = 3
-    if piece.symbol().upper() == "B":
-        value = 3
-    if piece.symbol().upper() == "R":
-        value = 5
-    if piece.symbol().upper() == "Q":
-        value = 9
-    if piece.symbol().upper() == 'K':
-        value = 100
+    value = piece_values[piece.symbol().upper()]
 
     if piece.color != color:
         value = value * -1
