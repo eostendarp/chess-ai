@@ -1,13 +1,8 @@
 import chess
-import copy
-import time
 from datetime import datetime
-from agents.random_agent import RandAgent
-from agents.human_agent import HumanAgent
-from agents.greedy_agent import GreedyAgent
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
-from agents.heuristics import piece_value_heuristic, combined
+from utils.heuristics import combined, piece_value_heuristic
 
 
 class ChessGame:

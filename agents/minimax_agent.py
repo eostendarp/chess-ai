@@ -1,6 +1,5 @@
 from agents.base_agent import BaseAgent
-from copy import deepcopy
-from agents.heuristics import get_color_bool, get_opposing_color
+from utils.heuristics import get_color_bool
 from random import shuffle
 from chess import *
 
