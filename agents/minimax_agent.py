@@ -16,16 +16,15 @@ class MiniMaxAgent(BaseAgent):
         shuffle(possible_moves)
         best_move = None
         best_score = float('-inf')
-        copy_board = board.copy()
 
         for move in possible_moves:
-            copy_board.push_uci(move.uci())
+            board.push_uci(move.uci())
 
-            if copy_board.is_checkmate() and copy_board.turn != self.color:
+            if board.is_checkmate() and board.turn != self.color:
                 return move
 
-            score = self.minimax(copy_board, self.heuristic, False, current_depth + 1, self.maximum_depth)
-            copy_board.pop()
+            score = self.minimax(board, self.heuristic, False, current_depth + 1, self.maximum_depth)
+            board.pop()
 
             if score > best_score:
                 # print(score)
