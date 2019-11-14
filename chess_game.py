@@ -31,7 +31,8 @@ class ChessGame:
         if state[0] == '1/2':
             end_state = {self.agent1.color: 0, self.agent2.color: 0, 'Tie': 1}
         else:
-            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
+            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]),
+                         'Tie': 0}
 
         return end_state
 
@@ -70,6 +71,7 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
     average_move_time = {agent1.color: 0, agent2.color: 0}
     tally = {agent1.color: 0, agent2.color: 0, 'Tie': 0}
     for i in range(num_games):
+        print("Game", i+1, "begin")
         if i % 2 == 0:
             game = ChessGame(agent1, agent2)
         else:
@@ -87,17 +89,16 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
             average_move_time[symbol] += (game.total_move_times[symbol] / game.moves_made[symbol])
 
         if display_moves:
-            print(str(game.board.unicode(borders=True))+"\n")
-
-
+            print(str(game.board.unicode(borders=True)) + "\n")
 
     return tally, average_move_time
 
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), GreedyAgent(False), 1, False)
+    tally, avg = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), MiniMaxAgent(False, piece_value_heuristic,3), 5, True)
     print(tally)
     print("Average Decision Times:", avg)
+
 
 run()
