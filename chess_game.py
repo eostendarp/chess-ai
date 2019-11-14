@@ -7,7 +7,7 @@ from agents.human_agent import HumanAgent
 from agents.greedy_agent import GreedyAgent
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
-from agents.heuristics import piece_value_heuristic
+from agents.heuristics import piece_value_heuristic, combined
 
 
 class ChessGame:
@@ -97,7 +97,7 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(AlphaBetaAgent("B", piece_value_heuristic, 3), MiniMaxAgent("W", piece_value_heuristic, 3), 1, True)
+    tally, avg = compare_agents(AlphaBetaAgent(True, combined, 3), MiniMaxAgent(False, combined, 3), 1, True)
     print(tally)
     print("Average Decision Times:",avg)
     

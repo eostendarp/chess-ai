@@ -40,6 +40,15 @@ def get_piece_value(piece, color):
     return value
 
 
+def general_mobility(board):
+    moves = [move for move in board.legal_moves]
+    return len(moves)*2
+
+
+def combined(board, color):
+    score = piece_value_heuristic(board, color) + general_mobility(board)
+    return score
+
 def get_opposing_color(color):
     if color == "W":
         return "B"

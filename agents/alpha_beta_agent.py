@@ -9,11 +9,10 @@ class AlphaBetaAgent(BaseAgent):
         super().__init__(color)
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
-        self.color_bool = get_color_bool(self.color)
 
     def get_move(self, board):
         current_depth = 0
-        possible_moves = board.legal_moves
+        possible_moves = [move for move in board.legal_moves]
         best_move = None
         best_score = float('-inf')
 
@@ -28,12 +27,13 @@ class AlphaBetaAgent(BaseAgent):
                 best_score = score
                 best_move = move
 
+        # print("AlphaBeta:",best_score)
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
 
         if current_depth == maximum_depth or board.is_game_over():
-            return heuristic(board, self.color_bool)
+            return heuristic(board, self.color)
 
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
@@ -59,3 +59,15 @@ class AlphaBetaAgent(BaseAgent):
 
 
         return best_score
+
+
+    def move_ordering(self, moves, board, max_turn, color):
+        move_values = []
+        for move in moves:
+            board.push_uci(move.uci())
+            score = self.heuristic(board, color)
+            move_values.append({'move':move, 'value':score})
+            board.pop()
+
+        ordered = sorted(move_values, key=lambda x:x['value'], reverse=True if max_turn else False)
+        return [x['move'] for x in ordered]
