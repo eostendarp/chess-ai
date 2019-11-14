@@ -28,8 +28,8 @@ class MiniMaxAgent(BaseAgent):
             copy_board.pop()
 
             if score > best_score:
-                print(score)
-                print(move)
+                # print(score)
+                # print(move)
                 best_score = score
                 best_move = move
 

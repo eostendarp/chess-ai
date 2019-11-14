@@ -1,12 +1,8 @@
 import chess
-import copy
-import time
 from datetime import datetime
-from agents.random_agent import RandAgent
-from agents.human_agent import HumanAgent
-from agents.greedy_agent import GreedyAgent
 from agents.minimax_agent import MiniMaxAgent
-from agents.heuristics import piece_value_heuristic
+from agents.alpha_beta_agent import AlphaBetaAgent
+from utils.heuristics import combined, piece_value_heuristic
 
 
 class ChessGame:
@@ -31,8 +27,7 @@ class ChessGame:
         if state[0] == '1/2':
             end_state = {self.agent1.color: 0, self.agent2.color: 0, 'Tie': 1}
         else:
-            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]),
-                         'Tie': 0}
+            end_state = {self.agent1.color: float(result.split('-')[0]), self.agent2.color: float(result.split('-')[1]), 'Tie': 0}
 
         return end_state
 
@@ -54,7 +49,7 @@ class ChessGame:
             print(str(self.board.unicode(borders=True)) + "\n")
 
     def play_move(self, agent):
-        chosen_move = agent.get_move(copy.deepcopy(self.board))
+        chosen_move = agent.get_move(self.board.copy())
         if chosen_move is not None:
             self.board.push_uci(chosen_move.uci())
 
@@ -71,7 +66,6 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
     average_move_time = {agent1.color: 0, agent2.color: 0}
     tally = {agent1.color: 0, agent2.color: 0, 'Tie': 0}
     for i in range(num_games):
-        print("Game", i+1, "begin")
         if i % 2 == 0:
             game = ChessGame(agent1, agent2)
         else:
@@ -89,16 +83,18 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
             average_move_time[symbol] += (game.total_move_times[symbol] / game.moves_made[symbol])
 
         if display_moves:
-            print(str(game.board.unicode(borders=True)) + "\n")
+            print(str(game.board.unicode(borders=True))+"\n")
+
+
 
     return tally, average_move_time
 
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(MiniMaxAgent(True, piece_value_heuristic, 3), MiniMaxAgent(False, piece_value_heuristic,3), 5, True)
+    tally, avg = compare_agents(AlphaBetaAgent(True, combined, 3), MiniMaxAgent(False, combined, 3), 1, True)
     print(tally)
-    print("Average Decision Times:", avg)
+    print("Average Decision Times:",avg)
 
 
 run()
