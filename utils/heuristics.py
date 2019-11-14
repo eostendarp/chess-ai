@@ -10,8 +10,8 @@ def piece_value_heuristic(board: Board, color: bool) -> int:
     opponent = not color
     board_size: int = 64
 
-    for square in range(0, board_size):
-        current_piece = board.piece_at(square)
+    for tile in range(0, board_size):
+        current_piece = board.piece_at(tile)
         score = score + get_piece_value(current_piece, color)
 
     return score
@@ -42,15 +42,3 @@ def combined(board, color):
     score = piece_value_heuristic(board, color) + general_mobility(board)
     return score
 
-def get_opposing_color(color):
-    if color == "W":
-        return "B"
-    elif color == "B":
-        return "W"
-
-
-def get_color_bool(color):
-    if color == "W":
-        return True
-    elif color == "B":
-        return False
