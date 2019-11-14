@@ -11,11 +11,16 @@ class AlphaBetaAgent(BaseAgent):
     def get_move(self, board):
         current_depth = 0
         possible_moves = [move for move in board.legal_moves]
+        shuffle(possible_moves)
         best_move = None
         best_score = float('-inf')
 
         for move in possible_moves:
             board.push_uci(move.uci())
+
+            if board.is_checkmate() and board.turn != self.color:
+                return move
+
             score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1, self.maximum_depth)
             board.pop()
 
