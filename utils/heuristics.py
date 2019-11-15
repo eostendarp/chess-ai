@@ -6,7 +6,7 @@ from typing import Dict
 import collections
 
 
-def piece_value_heuristic(board: Board, color: bool) -> int:
+def piece_value_heuristic(board: Board, color: bool, max_turn) -> int:
     score = 0
     opponent = not color
     board_size: int = 64
@@ -35,14 +35,14 @@ def get_piece_value(piece: Piece, color: bool) -> int:
 
 
 def general_mobility(board: Board, max_turn: bool) -> int:
-    piece_mobility_values = {"P":4, "N":8, "B":8, "R":5, "Q":3, "K":2}
+    piece_mobility_values = {PAWN: 4, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 2}
     moves = [move.from_square for move in board.legal_moves]
     move_count = collections.Counter(moves)
     mobility_score = 0
     for move in move_count.keys():
-        piece = board.piece_at(move).symbol().upper()
+        piece = board.piece_at(move)
         num_moves = move_count[move]
-        mobility_score += num_moves * piece_mobility_values[piece]
+        mobility_score += num_moves * piece_mobility_values[piece.piece_type]
 
     if not max_turn:
         mobility_score = mobility_score * -1
@@ -51,6 +51,6 @@ def general_mobility(board: Board, max_turn: bool) -> int:
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
-    score = piece_value_heuristic(board, color) + general_mobility(board, max_turn)
+    score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn)
     return score
 
