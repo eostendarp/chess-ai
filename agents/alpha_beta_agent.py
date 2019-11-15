@@ -27,13 +27,13 @@ class AlphaBetaAgent(BaseAgent):
                 best_score = score
                 best_move = move
 
-        # print("AlphaBeta:",best_score)
+        print("AlphaBeta:",best_score)
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
 
         if current_depth == maximum_depth or board.is_game_over():
-            return heuristic(board, self.color)
+            return heuristic(board, self.color, max_turn)
 
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
