@@ -1,8 +1,8 @@
 # chess-ai
 
-### Tasks to complete:
+### Tasks Completed:
 
-#### Tim: Move ordering
-#### Damion: Work on gamestate engine
-#### Erich: Data collection/visualization + random agent
-#### Sean: heuristic research, minimax implementation
+#### Tim: Alpha-Beta Implementation, Mobility Heuristic
+#### Damion: Human Player, Greedy Agent
+#### Erich: Random Agent, Transposition Tables
+#### Sean: MiniMax Implementation, Parity (Piece-Value) Heuristic
