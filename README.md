@@ -1,6 +1,6 @@
 # chess-ai
 
-## Tasks Completed:
+### Tasks Completed:
 
 #### Tim: Alpha-Beta Implementation, Mobility Heuristic
 #### Damion: Human Player, Greedy Agent
@@ -9,8 +9,4 @@
 
 ## Advanced Techniques To Be Added:
 
-#### Tim:
-#### Damion:
-#### Erich:
-#### Sean:
-### MVV-LVA
+
