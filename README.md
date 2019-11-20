@@ -22,3 +22,11 @@
    Resources: I am using various chess theory websites to help determine what exactly can be used to classify boards into these different states.
    
    This kind of thing is probably useful in a lot of intelligent agents, because a lot of systems operate in states, where the agent needs to react differently depending on such.
+   
+   
+#### Sean: Principal Variation Line
+  Principal Variation in chess is the sequence of moves that the agent finds that leads to the best possible move at that game state. The goal is to have a list as a property of our agent that stores the best move for each layer of the game tree, so that when we order moves, it prioritizes exploring those moves first for each depth of the tree. According to the Chess Programming Wiki Page, it is considered the "most important move ordering consideration" for an iterative deepening agent like the alpha-beta we're using. 
+  
+  Resources: The Chess Programming Wiki page is a great resource for this. I found out about this technique on the Move Ordering Page, and there is an entire page dedicated to Principal Variation as a topic. It can be explored much more deeply than just a PV-Line implementation, but for the sake of time this is the implementaiton I am going for
+  
+  It is really useful for turn based games like chess, but can be applied to any turn based game with a good heuristic, So it can be used to efficiently move order in checkers or connect 4, for example. Finding the actual PV-Line is not an expensive move either, as it stores the moves as it iterates through the move list
