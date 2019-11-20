@@ -30,3 +30,13 @@
   Resources: The Chess Programming Wiki page is a great resource for this. I found out about this technique on the Move Ordering Page, and there is an entire page dedicated to Principal Variation as a topic. It can be explored much more deeply than just a PV-Line implementation, but for the sake of time this is the implementaiton I am going for
   
   It is really useful for turn based games like chess, but can be applied to any turn based game with a good heuristic, So it can be used to efficiently move order in checkers or connect 4, for example. Finding the actual PV-Line is not an expensive move either, as it stores the moves as it iterates through the move list
+
+
+#### Erich: Transposition and Piece-Square Tables
+  Both Transposition and Piece-Square Tables are datastructures used to speed up evaluation by storing and incrementally updating evaluation scores as moves are made. By storing board and piece-square scores, we are able to lower the number of times we need to call heuristic functions. In addition, using Zobrist Hashing techniques, board hashes can be calculated in O(1) time as opposed to O(n) time, by taking advantage of the properties of the bitwise XOR operator.
+  
+  Resourses:
+    The Chess Programming Wiki for definitions on Piece-Square Tables
+    https://web.archive.org/web/20070822204038/http://www.seanet.com/~brucemo/topics/zobrist.htm for implementation details on Transposition Tables using Zobrist Hashing
+    
+   Both of these datastructures are useful in speeding up board evaluation of turn based games, but the underlying concept of using a hash table to cache calculated values for later access and incremental update can be used in almost any intelligent agent 
