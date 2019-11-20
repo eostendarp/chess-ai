@@ -2,7 +2,7 @@
 Add heuristics here
 """
 from chess import *
-from typing import Dict
+from typing import Dict, List
 import collections
 
 
@@ -48,6 +48,32 @@ def general_mobility(board: Board, max_turn: bool) -> int:
         mobility_score = mobility_score * -1
 
     return mobility_score
+
+
+# Find potential victims -> then for each victim find least valuable aggressor
+def mvvlva(board: Board, color: bool):
+    pieces = PIECE_TYPES[:-1]
+    mvv_locations = []
+    moves = []
+    # Victim cycle -> find MVV
+    for piece in pieces[::-1]:
+        # Get the location(s) of the given piece type for the opponent
+        location = board.pieces(piece, not color)
+        if len(location) > 0:
+            mvv_locations = location
+            break
+
+    if len(mvv_locations) > 0:
+        # Aggressor Cycle -> find the least valuable aggressor for the victim
+        for l in mvv_locations:
+            attkr_locations = board.attackers(not color, l)
+            if len(attkr_locations) > 0:
+                piece_to_location = [{"piece": board.piece_at(x), "from_square": x, "to_square": l} for x in attkr_locations]
+                sorted_pieces = sorted(piece_to_location, key=lambda x: x['piece'])
+                moves += [Move(x['from_square'], x['to_square']) for x in sorted_pieces]
+
+    return moves
+
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
