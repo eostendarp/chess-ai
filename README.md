@@ -29,6 +29,9 @@
   
   Resources: The Chess Programming Wiki page is a great resource for this. I found out about this technique on the Move Ordering Page, and there is an entire page dedicated to Principal Variation as a topic. It can be explored much more deeply than just a PV-Line implementation, but for the sake of time this is the implementaiton I am going for
   
+  https://www.chessprogramming.org/Principal_Variation The implementation I'm specifically going for is referred to as "PV-List on the stack"
+  https://www.chessprogramming.org/Move_Ordering This is where I saw the idea of the Principal Variation. Since it is considered one of the most important move ordering techniques I decided it would be a good place to start for our AI agent
+  
   It is really useful for turn based games like chess, but can be applied to any turn based game with a good heuristic, So it can be used to efficiently move order in checkers or connect 4, for example. Finding the actual PV-Line is not an expensive move either, as it stores the moves as it iterates through the move list
 
 
