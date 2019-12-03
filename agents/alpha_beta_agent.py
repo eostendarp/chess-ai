@@ -21,7 +21,8 @@ class AlphaBetaAgent(BaseAgent):
             if board.is_checkmate() and board.turn != self.color:
                 return move
 
-            score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1, self.maximum_depth)
+            score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1,
+                                    self.maximum_depth)
             board.pop()
 
             if score > best_score:
@@ -52,6 +53,7 @@ class AlphaBetaAgent(BaseAgent):
                 best_score = score
                 if best_score >= beta:
                     return best_score
+
                 alpha = max(alpha, best_score)
 
             if not max_turn and score < best_score:
