@@ -1,5 +1,6 @@
 from agents.base_agent import BaseAgent
 from random import shuffle
+from utils import gamestate
 
 
 class AlphaBetaAgent(BaseAgent):
@@ -31,6 +32,7 @@ class AlphaBetaAgent(BaseAgent):
                 best_move = move
 
         print("AlphaBeta:",best_score)
+        gamestate.determine_state(board, self.color)
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
