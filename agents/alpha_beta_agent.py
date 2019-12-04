@@ -1,6 +1,6 @@
 from agents.base_agent import BaseAgent
 from random import shuffle
-from utils import gamestate
+from utils import tapered_eval
 
 
 class AlphaBetaAgent(BaseAgent):
@@ -32,7 +32,7 @@ class AlphaBetaAgent(BaseAgent):
                 best_move = move
 
         print("AlphaBeta:",best_score)
-        gamestate.determine_state(board, self.color)
+        print(f"Tapered Eval: {tapered_eval.tapered_eval(board, self.color)}")
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
