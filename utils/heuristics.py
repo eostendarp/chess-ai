@@ -59,19 +59,25 @@ def mvvlva(board: Board, color: bool):
     for piece in pieces[::-1]:
         # Get the location(s) of the given piece type for the opponent
         location = board.pieces(piece, not color)
+        attackers = []
         if len(location) > 0:
-            mvv_locations = location
-            break
+            # Check to see that mvv can be attacked
+            for l in location:
+                attkr_locations = board.attackers(color, l)
+                attackers += list(attkr_locations)
+            if len(attackers) > 0:
+                mvv_locations = location
+                break
 
-    if len(mvv_locations) > 0:
+    if len(attackers) > 0:
         # Aggressor Cycle -> find the least valuable aggressor for the victim
         for l in mvv_locations:
-            attkr_locations = board.attackers(not color, l)
-            if len(attkr_locations) > 0:
-                piece_to_location = [{"piece": board.piece_at(x), "from_square": x, "to_square": l} for x in attkr_locations]
-                sorted_pieces = sorted(piece_to_location, key=lambda x: x['piece'])
-                moves += [Move(x['from_square'], x['to_square']) for x in sorted_pieces]
-
+            piece_to_location = [{"piece": board.piece_at(x), "from_square": x, "to_square": l} for x in attackers]
+            sorted_pieces = sorted(piece_to_location, key=lambda x: x['piece'].piece_type)
+            for x in sorted_pieces:
+                m = Move(x['from_square'], x['to_square'])
+                if board.is_legal(m):
+                    moves.append(m)
     return moves
 
 
