@@ -67,8 +67,6 @@ class OrderedAgent(BaseAgent):
             board.push_uci(move.uci())
             score = self.alpha_beta(board, heuristic, alpha, beta, not max_turn, current_depth+1, maximum_depth)
             board.pop()
-            hh = self.history[max_turn][board.piece_at(move.from_square)][move.to_square]
-            score += hh
 
             if max_turn and score > best_score:
                 best_score = score

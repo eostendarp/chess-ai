@@ -81,8 +81,45 @@ def mvvlva(board: Board, color: bool):
     return moves
 
 
-
 def combined(board: Board, color: bool, max_turn: bool) -> int:
     score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn)
     return score
+
+
+def sort_non_captures(history, turn, moves, board):
+    # sort moves by hh:
+    moves_to_values = []
+    for m in moves:
+        p = board.piece_at(m.from_square)
+        val = history[turn][p][m.to_square]
+        moves_to_values.append({'move': m, 'val': val})
+
+    sorted_non_caps = sorted(moves_to_values, key=lambda x: x['val'])
+    return [m['move'] for m in sorted_non_caps]
+
+
+def get_possible_moves(board, turn, history=None):
+    """
+    returns a list of possible moves that can be made by the agent
+    uses mvvlva and history table for move ordering
+    :param board: the current board
+    :param turn: bool
+    :param history: history_table for agent
+    :return: list of move objects
+    """
+    #TODO add in PV and Trans-table stuff to happen before captures
+
+    # Get sorted capture moves:
+    captures = mvvlva(board, turn)
+
+    # get non-captures:
+    non_captures = [move for move in board.legal_moves if move not in captures]
+
+    # sort non_captures with HH:
+    sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
+
+    move_list = captures + sorted_non_caps
+
+    return move_list
+
 
