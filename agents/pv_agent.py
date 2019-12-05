@@ -7,7 +7,7 @@ class PVAgent(BaseAgent):
         super().__init__(color)
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
-        self.pline = []
+        self.pv_line = []
 
     def get_move(self, board):
         current_depth = 0
@@ -15,7 +15,6 @@ class PVAgent(BaseAgent):
         shuffle(possible_moves)
         best_move = None
         best_score = float('-inf')
-        line = []
         score_array = [best_score]
 
         for move in possible_moves:
@@ -25,7 +24,7 @@ class PVAgent(BaseAgent):
                 return move
 
             score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1,
-                                    self.maximum_depth, score_array, line)
+                                    self.maximum_depth, score_array, self.pv_line)
 
             board.pop()
 
@@ -35,10 +34,10 @@ class PVAgent(BaseAgent):
                 best_score = score
                 best_move = move
 
-        line.reverse()
+        self.pv_line.reverse()
         print("AlphaBeta:", best_score)
         print("Best Move:", best_move)
-        print(line)
+        print(self.pv_line)
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth, best, pline):

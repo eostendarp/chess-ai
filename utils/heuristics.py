@@ -94,7 +94,7 @@ def sort_non_captures(history, turn, moves, board):
         val = history[turn][p][m.to_square]
         moves_to_values.append({'move': m, 'val': val})
 
-    sorted_non_caps = sorted(moves_to_values, key=lambda x: x['val'])
+    sorted_non_caps = sorted(moves_to_values, key=lambda x: x['val'], reverse=True)
     return [m['move'] for m in sorted_non_caps]
 
 
