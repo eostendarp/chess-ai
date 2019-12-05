@@ -98,7 +98,7 @@ def sort_non_captures(history, turn, moves, board):
     return [m['move'] for m in sorted_non_caps]
 
 
-def get_possible_moves(board, turn, history=None):
+def get_possible_moves(board, turn, pv_line, history=None):
     """
     returns a list of possible moves that can be made by the agent
     uses mvvlva and history table for move ordering
@@ -108,17 +108,25 @@ def get_possible_moves(board, turn, history=None):
     :return: list of move objects
     """
     #TODO add in PV and Trans-table stuff to happen before captures
+    legal_moves = board.legal_moves
+    pv = []
+    if len(pv_line) > 1 and turn:
+        pv = [pv_line[1]] if pv_line[1] in legal_moves else []
+
+    if len(pv_line) > 0 and not turn:
+        pv = [pv_line[0]] if pv_line[0] in legal_moves else []
+
 
     # Get sorted capture moves:
     captures = mvvlva(board, turn)
 
     # get non-captures:
-    non_captures = [move for move in board.legal_moves if move not in captures]
+    non_captures = [move for move in legal_moves if move not in captures]
 
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
 
-    move_list = captures + sorted_non_caps
+    move_list = pv + captures + sorted_non_caps
 
     return move_list
 
