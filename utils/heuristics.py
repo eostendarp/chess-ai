@@ -90,7 +90,7 @@ def sort_non_captures(history, turn, moves, board):
     # sort moves by hh:
     moves_to_values = []
     for m in moves:
-        p = board.piece_at(m.from_square)
+        p = board.piece_at(m.from_square).piece_type
         val = history[turn][p][m.to_square]
         moves_to_values.append({'move': m, 'val': val})
 

@@ -1,7 +1,7 @@
 from agents.base_agent import BaseAgent
 from random import shuffle
 from chess import *
-from utils.heuristics import mvvlva
+from utils.heuristics import mvvlva, get_possible_moves
 import copy
 from utils.history_utils import *
 import os
@@ -31,8 +31,9 @@ class OrderedAgent(BaseAgent):
 
     def get_move(self, board):
         current_depth = 0
-        possible_moves = [move for move in board.legal_moves]
-        shuffle(possible_moves)
+        # possible_moves = [move for move in board.legal_moves]
+        # shuffle(possible_moves)
+        possible_moves = get_possible_moves(board, self.color, history=self.history)
         best_move = None
         best_score = float('-inf')
 
@@ -58,9 +59,11 @@ class OrderedAgent(BaseAgent):
             return heuristic(board, self.color, max_turn)
 
         captures = mvvlva(board, self.color)
-        moves = [move for move in board.legal_moves if move not in captures]
-        shuffle(moves)
-        possible_moves = captures + moves
+        # moves = [move for move in board.legal_moves if move not in captures]
+        # shuffle(moves)
+        # possible_moves = captures + moves
+
+        possible_moves = get_possible_moves(board, max_turn, history=self.history)
 
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:

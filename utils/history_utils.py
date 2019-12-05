@@ -15,4 +15,23 @@ def read_in_history_table(file):
         data = f.read()
 
     table = json.loads(data)
-    return table
+
+    # need to re-create table with correct data-memberes, json converts keys to strings
+    recreated = {True: {}, False: {}}
+    t = table['true']
+    f = table['false']
+
+    t_info = {}
+    for key, value in t.items():
+        p_info = {int(k):v for k,v in value.items()}
+        t_info[int(key)] = p_info
+
+    f_info = {}
+    for key, value in f.items():
+        p_info = {int(k):v for k,v in value.items()}
+        f_info[int(key)] = p_info
+
+    recreated[True] = t_info
+    recreated[False] = f_info
+
+    return recreated
