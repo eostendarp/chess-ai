@@ -31,8 +31,10 @@ class AlphaBetaAgent(BaseAgent):
                 best_score = score
                 best_move = move
 
+
         print("AlphaBeta:", best_score)
         print("Best Move:", best_move)
+
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
