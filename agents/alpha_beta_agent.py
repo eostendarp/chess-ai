@@ -26,14 +26,12 @@ class AlphaBetaAgent(BaseAgent):
             board.pop()
 
             if score > best_score:
-                print(score)
-                print(move)
                 best_score = score
                 best_move = move
 
 
-        print("AlphaBeta:", best_score)
-        print("Best Move:", best_move)
+        # print("AlphaBeta:", best_score)
+        # print("Best Move:", best_move)
 
         return best_move
 
