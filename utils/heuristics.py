@@ -165,12 +165,9 @@ def get_possible_moves(board, turn, pv_line, history=None):
     """
     legal_moves = board.legal_moves
     pv = []
-    if len(pv_line) > 1 and turn:
+    if len(pv_line) > 1:
         pv = [pv_line[1]] if pv_line[1] in legal_moves else []
-
-    if len(pv_line) > 0 and not turn:
-        pv = [pv_line[0]] if pv_line[0] in legal_moves else []
-
+        pv_line.pop()
 
     # Get sorted capture moves:
     captures = capture_moves(board, turn)
