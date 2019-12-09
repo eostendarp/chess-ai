@@ -1,5 +1,6 @@
 from agents.base_agent import BaseAgent
 from random import shuffle
+from utils import state_identifier
 
 
 class AlphaBetaAgent(BaseAgent):
@@ -28,10 +29,6 @@ class AlphaBetaAgent(BaseAgent):
             if score > best_score:
                 best_score = score
                 best_move = move
-
-
-        # print("AlphaBeta:", best_score)
-        # print("Best Move:", best_move)
 
         return best_move
 
