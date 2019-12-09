@@ -34,7 +34,7 @@ class CombinedAgent(BaseAgent):
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
-        possible_moves = get_possible_moves(board, self.color, self.pv_line, history=self.history)
+        possible_moves = get_possible_moves(board, True, self.pv_line, history=self.history)
         best_move = None
         best_score = float('-inf')
         score_array = [best_score]

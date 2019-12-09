@@ -4,6 +4,7 @@ Add heuristics here
 from chess import *
 from typing import Dict, List
 import collections
+from utils.state_identifier import eval_boardstate
 
 
 def piece_value_heuristic(board: Board, color: bool, max_turn) -> int:
@@ -35,7 +36,14 @@ def get_piece_value(piece: Piece, color: bool) -> int:
 
 
 def general_mobility(board: Board, max_turn: bool) -> int:
-    piece_mobility_values = {PAWN: 4, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 2}
+    state = eval_boardstate(board, max_turn)
+    if state['opening']:
+        piece_mobility_values = {PAWN: 5, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 1}
+    elif state['middlegame']:
+        piece_mobility_values = {PAWN: 2, KNIGHT: 5, BISHOP: 5, ROOK: 6, QUEEN: 6, KING: 1}
+    elif state['endgame']:
+        piece_mobility_values = {PAWN: 5, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 6, KING: 5}
+
     moves = [move.from_square for move in board.legal_moves]
     move_count = collections.Counter(moves)
     mobility_score = 0
@@ -51,6 +59,7 @@ def general_mobility(board: Board, max_turn: bool) -> int:
 
 
 # Find potential victims -> then for each victim find least valuable aggressor
+@DeprecationWarning
 def mvvlva(board: Board, color: bool):
     pieces = PIECE_TYPES[:-1]
     mvv_locations = []
@@ -116,10 +125,6 @@ def capture_moves(board: Board, color: bool):
                 else:
                     losing_moves.append((move, m))
 
-    # sort captures
-    # winning sorted by mvvlva
-    # neutral sorted by lowest value
-    # losing sorted by lowest value
     winning = sorted(winning_moves, key=lambda x: x[0]['victim'].piece_type-x[0]['attacker'].piece_type, reverse=True) if len(winning_moves) > 1 else winning_moves
     neutral = sorted(neutral_moves, key=lambda x: x[0]['victim'].piece_type) if len(neutral_moves) > 1 else neutral_moves
     losing = sorted(losing_moves, key=lambda x: x[0]['attacker'].piece_type) if len(losing_moves) > 1 else losing_moves
@@ -176,7 +181,7 @@ def get_possible_moves(board, turn, pv_line, history=None):
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
 
-    move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
+    move_list = pv + captures['winning'] + captures['neutral'] + captures['losing'] + non_captures
 
     return move_list
 

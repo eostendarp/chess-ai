@@ -3,8 +3,8 @@ import json
 import os
 
 
-def write_history_table(history_table):
-    table_json = json.dumps(history_table)
+def write_history_table(agent):
+    table_json = json.dumps(agent.history)
     f = open(os.getcwd()+"/data/history_table.json","w")
     f.write(table_json)
     f.close()
