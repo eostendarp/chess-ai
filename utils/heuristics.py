@@ -158,7 +158,6 @@ def get_possible_moves(board, turn, pv_line, history=None):
     :param history: history_table for agent
     :return: list of move objects
     """
-    #TODO add in PV and Trans-table stuff to happen before captures
     legal_moves = board.legal_moves
     pv = []
     if len(pv_line) > 1 and turn:
