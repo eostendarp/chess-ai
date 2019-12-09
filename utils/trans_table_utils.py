@@ -4,8 +4,8 @@ from chess import *
 from typing import Dict, Tuple
 
 
-LookupTable = Dict[Tuple[Square, Piece, Color]]
-HashTable = Dict[int, float]
+LookupTable = Dict[Tuple[Square, PieceType, Color], int]
+TransTable = Dict[int, float]
 
 
 def random_bitstring(length: int = 64) -> int:
@@ -27,11 +27,11 @@ def hash_(lookup_table: LookupTable, board: Board):
         p: Piece = board.piece_at(s)
         if p is not None:
             c: Color = p.color
-            h ^= lookup_table[(s, p, c)]
+            h ^= lookup_table[(s, p.piece_type, c)]
     return h
 
 
-def read_trans_table(path: str) -> HashTable:
+def read_trans_table(path: str) -> TransTable:
     try:
         with open(path, 'rb') as f:
             return load(f)
@@ -47,7 +47,7 @@ def read_lookup_table(path: str) -> LookupTable:
         return gen_lookup_table()
 
 
-def write_trans_table(trans_table: HashTable, path: str) -> None:
+def write_trans_table(trans_table: TransTable, path: str) -> None:
     with open(path, 'wb') as f:
         dump(trans_table, f)
 

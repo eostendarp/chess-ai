@@ -2,7 +2,7 @@
 Add heuristics here
 """
 from chess import *
-from typing import Dict
+from typing import Dict, List
 import collections
 
 
@@ -50,7 +50,84 @@ def general_mobility(board: Board, max_turn: bool) -> int:
     return mobility_score
 
 
+# Find potential victims -> then for each victim find least valuable aggressor
+def mvvlva(board: Board, color: bool):
+    pieces = PIECE_TYPES[:-1]
+    mvv_locations = []
+    moves = []
+    # Victim cycle -> find MVV
+    for piece in pieces[::-1]:
+        # Get the location(s) of the given piece type for the opponent
+        location = board.pieces(piece, not color)
+        attackers = []
+        if len(location) > 0:
+            # Check to see that mvv can be attacked
+            for l in location:
+                attkr_locations = board.attackers(color, l)
+                attackers += list(attkr_locations)
+            if len(attackers) > 0:
+                mvv_locations = location
+                break
+
+    if len(attackers) > 0:
+        # Aggressor Cycle -> find the least valuable aggressor for the victim
+        for l in mvv_locations:
+            piece_to_location = [{"piece": board.piece_at(x), "from_square": x, "to_square": l} for x in attackers]
+            sorted_pieces = sorted(piece_to_location, key=lambda x: x['piece'].piece_type)
+            for x in sorted_pieces:
+                m = Move(x['from_square'], x['to_square'])
+                if board.is_legal(m):
+                    moves.append(m)
+    return moves
+
+
 def combined(board: Board, color: bool, max_turn: bool) -> int:
     score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn)
     return score
+
+
+def sort_non_captures(history, turn, moves, board):
+    # sort moves by hh:
+    moves_to_values = []
+    for m in moves:
+        p = board.piece_at(m.from_square).piece_type
+        val = history[turn][p][m.to_square]
+        moves_to_values.append({'move': m, 'val': val})
+
+    sorted_non_caps = sorted(moves_to_values, key=lambda x: x['val'], reverse=True)
+    return [m['move'] for m in sorted_non_caps]
+
+
+def get_possible_moves(board, turn, pv_line, history=None):
+    """
+    returns a list of possible moves that can be made by the agent
+    uses mvvlva and history table for move ordering
+    :param board: the current board
+    :param turn: bool
+    :param history: history_table for agent
+    :return: list of move objects
+    """
+    #TODO add in PV and Trans-table stuff to happen before captures
+    legal_moves = board.legal_moves
+    pv = []
+    if len(pv_line) > 1 and turn:
+        pv = [pv_line[1]] if pv_line[1] in legal_moves else []
+
+    if len(pv_line) > 0 and not turn:
+        pv = [pv_line[0]] if pv_line[0] in legal_moves else []
+
+
+    # Get sorted capture moves:
+    captures = mvvlva(board, turn)
+
+    # get non-captures:
+    non_captures = [move for move in legal_moves if move not in captures]
+
+    # sort non_captures with HH:
+    sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
+
+    move_list = pv + captures + sorted_non_caps
+
+    return move_list
+
 
