@@ -173,7 +173,7 @@ def get_possible_moves(board, turn, pv_line, history=None):
     captures = capture_moves(board, turn)
 
     # get non-captures:
-    non_captures = [move for move in legal_moves if move not in captures]
+    non_captures = [move for move in legal_moves if move not in captures['winning'] and move not in captures['neutral'] and move not in captures['losing']]
 
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board)

@@ -3,7 +3,7 @@ from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
-from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
+from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves, get_possible_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
 from agents.combined_agent import CombinedAgent
@@ -100,9 +100,14 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
 
 
 def capture_test():
-    # fen = "8/8/8/3b4/2B1P3/8/8/8 w - - 0 1"
-    b = chess.Board()
+    fen = "4k3/8/8/2bpq3/3PQ3/8/8/3K4 w - - 0 1"
+    b = chess.Board(fen=fen)
     print(b.unicode(borders=True))
+    agent = CombinedAgent(True, combined, 3)
+    moves = get_possible_moves(b, b.turn, [], history=agent.history)
+    legal = [moves for moves in b.legal_moves]
+    print(len(moves))
+    print(len(legal))
 
 
 
@@ -112,4 +117,4 @@ def run():
     print(tally)
     print("Average Decision Times:", avg)
 
-run()
+capture_test()
