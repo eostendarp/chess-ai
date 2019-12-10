@@ -10,6 +10,7 @@ import os
 class CombinedAgent(BaseAgent):
     def __init__(self, color, heuristic, maximum_depth, load_hh=False):
         super().__init__(color)
+        self.name='combined'
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
         self.history = self.init_history(load_hh=load_hh)
