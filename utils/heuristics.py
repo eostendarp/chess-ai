@@ -38,7 +38,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
 def general_mobility(board: Board, max_turn: bool) -> int:
     state = eval_boardstate(board, max_turn)
     if state['opening']:
-        piece_mobility_values = {PAWN: 5, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 1}
+        piece_mobility_values = {PAWN: 6, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 2, KING: 0}
     elif state['middlegame']:
         piece_mobility_values = {PAWN: 2, KNIGHT: 5, BISHOP: 5, ROOK: 6, QUEEN: 6, KING: 1}
     elif state['endgame']:
@@ -55,7 +55,7 @@ def general_mobility(board: Board, max_turn: bool) -> int:
     if not max_turn:
         mobility_score = mobility_score * -1
 
-    return mobility_score
+    return int(mobility_score/2)
 
 
 # Find potential victims -> then for each victim find least valuable aggressor
@@ -182,12 +182,12 @@ def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     captures = capture_moves(board, turn)
 
     # get non-captures:
-    non_captures = [move for move in legal_moves if move not in captures]
+    non_captures = [move for move in legal_moves if move not in captures['winning'] and move not in captures['neutral'] and move not in captures['losing']]
 
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
 
-    move_list = pv + captures['winning'] + captures['neutral'] + captures['losing'] + non_captures
+    move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
 
     return move_list
 
