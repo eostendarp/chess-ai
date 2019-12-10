@@ -178,7 +178,7 @@ def get_possible_moves(board, turn, pv_line, history=None):
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
 
-    move_list = pv + captures['winning'] + captures['neutral'] + captures['losing'] + non_captures
+    move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
 
     return move_list
 

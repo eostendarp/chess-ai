@@ -47,7 +47,7 @@ class CombinedAgent(BaseAgent):
                 return move
 
             score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'),
-                                    False, current_depth + 1, self.maximum_depth, score_array, self.pv_line)
+                                    False, self.maximum_depth, score_array, self.pv_line)
             board.pop()
 
             if score > best_score:
@@ -59,10 +59,10 @@ class CombinedAgent(BaseAgent):
         # print(self.pv_line)
         return best_move
 
-    def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth, best, pline):
+    def alpha_beta(self, board, heuristic, alpha, beta, max_turn, depth, best, pline):
         original_best = best[0]
 
-        if current_depth == maximum_depth or board.is_game_over():
+        if depth == 0 or board.is_game_over():
             curr_score = heuristic(board, self.color, max_turn)
             if curr_score > best[0]:
                 pline.clear()
@@ -78,8 +78,8 @@ class CombinedAgent(BaseAgent):
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:
             board.push_uci(move.uci())
-            score = self.alpha_beta(board, heuristic, alpha, beta, not max_turn,
-                                    current_depth+1, maximum_depth, best, pline)
+            score = self.alpha_beta(board, heuristic, alpha, beta,
+                                    not max_turn, depth-1, best, pline)
 
             if original_best != best[0]:
                 original_best = best[0]
@@ -92,7 +92,7 @@ class CombinedAgent(BaseAgent):
                 if best_score >= beta:
                     if not board.is_capture(move):
                         piece = board.piece_at(move.from_square)
-                        self.history[max_turn][piece.piece_type][move.to_square] += pow(2, current_depth)
+                        self.history[max_turn][piece.piece_type][move.to_square] += pow(2, depth)
                     return best_score
                 alpha = max(alpha, best_score)
 
@@ -101,20 +101,8 @@ class CombinedAgent(BaseAgent):
                 if best_score <= alpha:
                     if not board.is_capture(move):
                         piece = board.piece_at(move.from_square)
-                        self.history[max_turn][piece.piece_type][move.to_square] += pow(2, current_depth)
+                        self.history[max_turn][piece.piece_type][move.to_square] += pow(2, depth)
                     return best_score
                 beta = min(beta, best_score)
 
         return best_score
-
-
-    def move_ordering(self, moves, board, max_turn, color):
-        move_values = []
-        for move in moves:
-            board.push_uci(move.uci())
-            score = self.heuristic(board, color)
-            move_values.append({'move':move, 'value':score})
-            board.pop()
-
-        ordered = sorted(move_values, key=lambda x:x['value'], reverse=True if max_turn else False)
-        return [x['move'] for x in ordered]

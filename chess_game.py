@@ -7,6 +7,7 @@ from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_mo
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
 from agents.combined_agent import CombinedAgent
+from agents.NegaScoutAgent import NegaScoutAgent
 
 
 class ChessGame:
@@ -93,21 +94,21 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
-    #write_history_table(agent1.history)
+    write_history_table(agent1)
 
     return tally, average_move_time
 
 
 def capture_test():
-    fen = "8/8/8/3b4/2B1P3/8/8/8 w - - 0 1"
-    b = chess.Board(fen=fen)
-    print(b)
-    capture_moves(b, True)
+    # fen = "8/8/8/3b4/2B1P3/8/8/8 w - - 0 1"
+    b = chess.Board()
+    print(b.unicode(borders=True))
+
 
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(CombinedAgent(True, combined, 3), AlphaBetaAgent(False, combined, 3), 1, True)
+    tally, avg = compare_agents(CombinedAgent(True, combined, 3, load_hh=True), AlphaBetaAgent(False, combined, 3), 1, True)
     print(tally)
     print("Average Decision Times:", avg)
 

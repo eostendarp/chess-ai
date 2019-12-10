@@ -37,8 +37,7 @@ class NegaScoutAgent(BaseAgent):
         score_array = [best_score]
 
         for move in possible_moves:
-            board.push_uci(move.uci())
-            print(board.unicode(borders=True))
+            board.push(move)
 
             if board.is_checkmate() and board.turn != self.color:
                 return move
@@ -53,46 +52,69 @@ class NegaScoutAgent(BaseAgent):
                 best_move = move
 
         return best_move
+    #
+    # def negascout(self, board, heuristic, alpha, beta, current_depth, best, pv_line):
+    #     original_best = best[0]
+    #
+    #     if current_depth == 0 or board.is_game_over():
+    #         curr_score = heuristic(board, self.color, board.turn==self.color)
+    #         if curr_score > best[0]:
+    #             pv_line.clear()
+    #             best.clear()
+    #             best.append(curr_score)
+    #             return curr_score
+    #         else:
+    #             return best[0]
+    #
+    #     possible_moves = get_possible_moves(board, board.turn==self.color, self.pv_line, history=self.history)
+    #
+    #     for move in range(len(possible_moves)):
+    #         board.push(possible_moves[move])
+    #
+    #         # First move in list is considered the best move
+    #         if move == 0:
+    #             score = 0 - self.negascout(board, heuristic, 0-beta, 0-alpha,
+    #                                        current_depth-1, best, pv_line)
+    #             board.pop()
+    #         else:   # Search with null window
+    #             score = 0 - self.negascout(board, heuristic, 0-alpha-1, 0-alpha,
+    #                                        current_depth-1, best, pv_line)
+    #             board.pop()
+    #
+    #             if alpha < score < beta:    # if failed high, do a re-search
+    #                 score = 0 - self.negascout(board, heuristic, 0-beta, 0-score,
+    #                                            current_depth, best, pv_line)
+    #         alpha = max(alpha, score)
+    #         # Beta cut-off
+    #         if alpha >= beta:
+    #             if not board.is_capture(possible_moves[move]):
+    #                 piece = board.piece_at(possible_moves[move].from_square)
+    #                 self.history[board.turn==self.color][piece.piece_type][possible_moves[move].to_square] += pow(2, current_depth)
+    #             break
+    #
+    #     return alpha
 
-    def negascout(self, board, heuristic, alpha, beta, current_depth, best, pv_line):
-        original_best = best[0]
+    def negascout(self, board, hueristic, alpha, beta, depth, best, pv_line):
+        if depth == 0 or board.is_game_over():
+            return hueristic(board, self.color, board.turn==self.color)
 
-        if current_depth == 0 or board.is_game_over():
-            curr_score = heuristic(board, self.color, board.turn==self.color)
-            if curr_score > best[0]:
-                pv_line.clear()
-                best.clear()
-                best.append(curr_score)
-                return curr_score
-            else:
-                return best[0]
+        possible_moves = get_possible_moves(board, board.turn==self.color, pv_line, history=self.history)
+        b = beta
+        for i in range(len(possible_moves)):
+            board.push(possible_moves[i])
+            t = 0 - self.negascout(board, hueristic, 0-b, 0-alpha, depth-1, best, pv_line)
 
-        possible_moves = get_possible_moves(board, board.turn==self.color, self.pv_line, history=self.history)
+            if beta > t > alpha and i > 1:
+                t = 0 - self.negascout(board, hueristic, 0-beta, 0-alpha, depth-1, best, pv_line)     # re-search
 
-        for move in range(len(possible_moves)):
-            board.push_uci(possible_moves[move].uci())
+            board.pop()
+            alpha = max(alpha, t)
+            if alpha >= beta:        # Beta Cut-off
+                if not board.is_capture(possible_moves[i]):
+                    piece = board.piece_at(possible_moves[i].from_square)
+                    self.history[board.turn==self.color][piece.piece_type][possible_moves[i].to_square] += pow(2, depth)
+                return alpha
 
-            # First move in list is considered the best move
-            if move == 0:
-                score = 0 - self.negascout(board, heuristic, 0-beta, 0-alpha,
-                                           current_depth-1, best, pv_line)
-                board.pop()
-            else:   # Search with null window
-                score = 0 - self.negascout(board, heuristic, 0-alpha-1, 0-alpha,
-                                           current_depth-1, best, pv_line)
-                board.pop()
-
-                if alpha < score < beta:    # if failed high, do a re-search
-                    score = 0 - self.negascout(board, heuristic, 0-beta, 0-score,
-                                               current_depth-1, best, pv_line)
-                    board.pop()
-            alpha = max(alpha, score)
-            # Beta cut-off
-            if alpha >= beta:
-                if not board.is_capture(possible_moves[move]):
-                    piece = board.piece_at(possible_moves[move].from_square)
-                    self.history[board.turn==self.color][piece.piece_type][possible_moves[move].to_square] += pow(2, current_depth)
-                break
+            b = alpha + 1   # Set new null window
 
         return alpha
-
