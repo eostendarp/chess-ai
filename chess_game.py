@@ -10,6 +10,8 @@ from agents.pv_agent import PVAgent
 from agents.combined_agent import CombinedAgent
 from utils import trans_table_utils as ttu
 from os import getcwd
+from agents.combined_agent import CombinedAgent
+
 
 class ChessGame:
 
