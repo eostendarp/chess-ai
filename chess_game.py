@@ -100,14 +100,15 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
 
 
 def capture_test():
-    fen = "4k3/8/8/2bpq3/3PQ3/8/8/3K4 w - - 0 1"
+    fen = "4k3/8/8/2b1q3/3PQ3/8/8/3K4 w - - 0 1"
     b = chess.Board(fen=fen)
     print(b.unicode(borders=True))
     agent = CombinedAgent(True, combined, 3)
     moves = get_possible_moves(b, b.turn, [], history=agent.history)
     legal = [moves for moves in b.legal_moves]
-    print(len(moves))
-    print(len(legal))
+    selected = agent.get_move(b)
+    print(moves)
+    print(selected.uci())
 
 
 
@@ -117,4 +118,6 @@ def run():
     print(tally)
     print("Average Decision Times:", avg)
 
+
 capture_test()
+# run()

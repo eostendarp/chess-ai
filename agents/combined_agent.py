@@ -54,7 +54,7 @@ class CombinedAgent(BaseAgent):
                 best_score = score
                 best_move = move
 
-        # print("AlphaBeta:",best_score)
+        print("AlphaBeta:",best_score)
         self.pv_line.reverse()
         # print(self.pv_line)
         return best_move

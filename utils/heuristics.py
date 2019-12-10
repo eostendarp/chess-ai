@@ -38,7 +38,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
 def general_mobility(board: Board, max_turn: bool) -> int:
     state = eval_boardstate(board, max_turn)
     if state['opening']:
-        piece_mobility_values = {PAWN: 5, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 1}
+        piece_mobility_values = {PAWN: 6, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 2, KING: 0}
     elif state['middlegame']:
         piece_mobility_values = {PAWN: 2, KNIGHT: 5, BISHOP: 5, ROOK: 6, QUEEN: 6, KING: 1}
     elif state['endgame']:
@@ -55,7 +55,7 @@ def general_mobility(board: Board, max_turn: bool) -> int:
     if not max_turn:
         mobility_score = mobility_score * -1
 
-    return mobility_score
+    return int(mobility_score/2)
 
 
 # Find potential victims -> then for each victim find least valuable aggressor
