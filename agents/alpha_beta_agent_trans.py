@@ -75,11 +75,7 @@ class AlphaBetaAgentTrans(BaseAgent):
         move_values = []
         for move in moves:
             board.push_uci(move.uci())
-            h = ttu.hash_(board)
-            score = self.trans_table.get(h)
-            if score is None:
-                score = self.heuristic(board, color)
-                self.trans_table[h] = score
+            score = self.heuristic(board, color)
             move_values.append({'move': move, 'value': score})
             board.pop()
 
