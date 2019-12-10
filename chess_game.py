@@ -3,11 +3,13 @@ from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
+from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
 from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
 from agents.combined_agent import CombinedAgent
-
+from utils import trans_table_utils as ttu
+from os import getcwd
 
 class ChessGame:
 
@@ -107,7 +109,9 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(CombinedAgent(True, combined, 3), AlphaBetaAgent(False, combined, 3), 1, True)
+    agent1, agent2 = [CombinedAgent(True, combined, 3), AlphaBetaAgentTrans(False, combined, 3)]
+    tally, avg = compare_agents(agent1, agent2, 1, True)
+    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/alpha_beta/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 
