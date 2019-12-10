@@ -3,12 +3,13 @@ from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
-from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves, get_possible_moves
+from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
+from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
 from agents.combined_agent import CombinedAgent
-from agents.NegaScoutAgent import NegaScoutAgent
-
+from utils import trans_table_utils as ttu
+from os import getcwd
 
 class ChessGame:
 
@@ -94,30 +95,24 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
-    write_history_table(agent1)
+    #write_history_table(agent1.history)
 
     return tally, average_move_time
 
 
 def capture_test():
-    fen = "4k3/8/8/2b1q3/3PQ3/8/8/3K4 w - - 0 1"
+    fen = "8/8/8/3b4/2B1P3/8/8/8 w - - 0 1"
     b = chess.Board(fen=fen)
-    print(b.unicode(borders=True))
-    agent = CombinedAgent(True, combined, 3)
-    moves = get_possible_moves(b, b.turn, [], history=agent.history)
-    legal = [moves for moves in b.legal_moves]
-    selected = agent.get_move(b)
-    print(moves)
-    print(selected.uci())
-
+    print(b)
+    capture_moves(b, True)
 
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(CombinedAgent(True, combined, 3, load_hh=True), AlphaBetaAgent(False, combined, 3), 1, True)
+    agent1, agent2 = [CombinedAgent(True, combined, 3), AlphaBetaAgentTrans(False, combined, 3)]
+    tally, avg = compare_agents(agent1, agent2, 1, True)
+    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/alpha_beta/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 
-
-capture_test()
-# run()
+run()
