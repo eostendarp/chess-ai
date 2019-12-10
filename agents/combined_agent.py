@@ -47,7 +47,7 @@ class CombinedAgent(BaseAgent):
                 return move
 
             score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'),
-                                    False, self.maximum_depth, score_array, self.pv_line)
+                                    False, self.maximum_depth-1, score_array, self.pv_line)
             board.pop()
 
             if score > best_score:
