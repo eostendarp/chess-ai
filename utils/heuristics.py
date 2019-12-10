@@ -154,7 +154,7 @@ def sort_non_captures(history, turn, moves, board):
     return [m['move'] for m in sorted_non_caps]
 
 
-def get_possible_moves(board, turn, pv_line, history=None):
+def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     """
     returns a list of possible moves that can be made by the agent
     uses mvvlva and history table for move ordering
@@ -165,9 +165,18 @@ def get_possible_moves(board, turn, pv_line, history=None):
     """
     legal_moves = board.legal_moves
     pv = []
-    if len(pv_line) > 1:
+    '''
+    if len(pv_line) > 1 and turn:
         pv = [pv_line[1]] if pv_line[1] in legal_moves else []
-        pv_line.pop()
+
+    if len(pv_line) > 0 and not turn:
+        pv = [pv_line[0]] if pv_line[0] in legal_moves else []
+    '''
+    if len(pv_line) > current_depth+1:
+        pv = [pv_line[current_depth+1]] if pv_line[current_depth+1] in legal_moves else []
+
+
+
 
     # Get sorted capture moves:
     captures = capture_moves(board, turn)

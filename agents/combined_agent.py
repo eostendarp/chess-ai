@@ -35,7 +35,7 @@ class CombinedAgent(BaseAgent):
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
-        possible_moves = get_possible_moves(board, True, self.pv_line, history=self.history)
+        possible_moves = get_possible_moves(board, True, self.pv_line,current_depth, history=self.history)
         best_move = None
         best_score = float('-inf')
         score_array = [best_score]
@@ -47,43 +47,48 @@ class CombinedAgent(BaseAgent):
                 return move
 
             score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'),
-                                    False, self.maximum_depth-1, score_array, self.pv_line)
+                                    False, self.maximum_depth-1, score_array)
+
             board.pop()
 
             if score > best_score:
                 best_score = score
                 best_move = move
-
-        print("AlphaBeta:",best_score)
-        self.pv_line.reverse()
-        # print(self.pv_line)
+                
+        # print("AlphaBeta:",best_score)
+        #self.pv_line.reverse()
+        print(self.pv_line)
+        print("Combined: ",best_move)
         return best_move
 
-    def alpha_beta(self, board, heuristic, alpha, beta, max_turn, depth, best, pline):
+                
+    def alpha_beta(self, board, heuristic, alpha, beta, max_turn, depth, best):
+
         original_best = best[0]
 
         if depth == 0 or board.is_game_over():
             curr_score = heuristic(board, self.color, max_turn)
             if curr_score > best[0]:
-                pline.clear()
+                self.pv_line.clear()
                 best.clear()
                 best.append(curr_score)
                 return curr_score
             else:
                 return best[0]
 
-        possible_moves = get_possible_moves(board, max_turn, self.pv_line, history=self.history)
+        possible_moves = get_possible_moves(board, max_turn, self.pv_line,current_depth, history=self.history)
 
 
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:
             board.push_uci(move.uci())
             score = self.alpha_beta(board, heuristic, alpha, beta,
-                                    not max_turn, depth-1, best, pline)
+                                    not max_turn, depth-1, best)
 
             if original_best != best[0]:
                 original_best = best[0]
-                pline.append(board.pop())
+                self.pv_line.insert(0, board.pop())
+                #self.pv_line.append(board.pop())
             else:
                 board.pop()
 
@@ -106,3 +111,4 @@ class CombinedAgent(BaseAgent):
                 beta = min(beta, best_score)
 
         return best_score
+
