@@ -35,8 +35,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
     return value
 
 
-def general_mobility(board: Board, max_turn: bool) -> int:
-    state = eval_boardstate(board, max_turn)
+def general_mobility(board: Board, max_turn: bool, state) -> int:
     if state['opening']:
         piece_mobility_values = {PAWN: 6, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 2, KING: 0}
     elif state['middlegame']:
@@ -138,7 +137,8 @@ def capture_moves(board: Board, color: bool):
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
-    score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn)
+    state = eval_boardstate(board, max_turn)
+    score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn, state)
     return score
 
 

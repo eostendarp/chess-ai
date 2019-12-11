@@ -35,7 +35,7 @@ class CombinedAgent(BaseAgent):
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
-        possible_moves = get_possible_moves(board, True, self.pv_line,current_depth, history=self.history)
+        possible_moves = get_possible_moves(board, True, self.pv_line, current_depth, history=self.history)
         best_move = None
         best_score = float('-inf')
         score_array = [best_score]
@@ -76,8 +76,7 @@ class CombinedAgent(BaseAgent):
             else:
                 return best[0]
 
-        possible_moves = get_possible_moves(board, max_turn, self.pv_line,current_depth, history=self.history)
-
+        possible_moves = get_possible_moves(board, max_turn, self.pv_line, self.maximum_depth - depth, history=self.history)
 
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:
@@ -88,7 +87,6 @@ class CombinedAgent(BaseAgent):
             if original_best != best[0]:
                 original_best = best[0]
                 self.pv_line.insert(0, board.pop())
-                #self.pv_line.append(board.pop())
             else:
                 board.pop()
 

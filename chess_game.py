@@ -11,6 +11,7 @@ from agents.combined_agent import CombinedAgent
 from utils import trans_table_utils as ttu
 from os import getcwd
 from agents.combined_agent import CombinedAgent
+from agents.combined_agent_trans import CombinedAgentTrans
 
 
 class ChessGame:
@@ -97,7 +98,7 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
-    #write_history_table(agent1.history)
+    write_history_table(agent1)
 
     return tally, average_move_time
 
@@ -111,7 +112,7 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [CombinedAgent(True, combined, 3), AlphaBetaAgentTrans(False, combined, 3)]
+    agent1, agent2 = [CombinedAgent(True, combined, 3, load_hh=True), CombinedAgentTrans(False, combined, 3, load_hh=True)]
     tally, avg = compare_agents(agent1, agent2, 1, True)
     #ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/alpha_beta/trans_table.pickle')
     print(tally)
