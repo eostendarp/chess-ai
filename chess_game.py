@@ -1,10 +1,18 @@
 import chess
+from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
-from utils.heuristics import combined, piece_value_heuristic
+from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
+from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
+from utils.history_utils import *
 from agents.pv_agent import PVAgent
 from utils.tapered_evaluation import tapered_evaluation
+from agents.combined_agent import CombinedAgent
+from utils import trans_table_utils as ttu
+from os import getcwd
+from agents.combined_agent import CombinedAgent
+from agents.combined_agent_trans import CombinedAgentTrans
 
 
 class ChessGame:
@@ -76,6 +84,9 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(game.board.unicode(borders=True))
 
+        if i % 3 == 0:
+            print(i,"Games finished")
+
         results = game.play_game(display_moves=display_moves)
 
         tally[agent1.color] += results[agent1.color]
@@ -88,15 +99,24 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
+    write_history_table(agent1)
+
     return tally, average_move_time
+
+
+def capture_test():
+    fen = "8/8/8/3b4/2B1P3/8/8/8 w - - 0 1"
+    b = chess.Board(fen=fen)
+    print(b)
+    capture_moves(b, True)
 
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(AlphaBetaAgent(False, piece_value_heuristic, 3),
-                                AlphaBetaAgent(True, tapered_evaluation, 3), 1, True)
+    agent1, agent2 = [CombinedAgent(True, combined, 3, load_hh=True), CombinedAgentTrans(False, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 1, True)
+    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
-
 
 run()
