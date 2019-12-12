@@ -29,7 +29,7 @@ class AlphaBetaAgent(BaseAgent):
             if score > best_score:
                 best_score = score
                 best_move = move
-
+        #print(f"Color: {self.color} Score: {best_score}")
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):

@@ -4,6 +4,7 @@ from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
 from utils.heuristics import combined, piece_value_heuristic
 from agents.pv_agent import PVAgent
+from utils.tapered_evaluation import tapered_evaluation
 
 
 class ChessGame:
@@ -92,8 +93,8 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
 
 def run():
     print("Comparing Agents")
-    tally, avg = compare_agents(PVAgent(True, piece_value_heuristic, 5),
-                                AlphaBetaAgent(False, piece_value_heuristic, 4), 1, True)
+    tally, avg = compare_agents(AlphaBetaAgent(False, piece_value_heuristic, 3),
+                                AlphaBetaAgent(True, tapered_evaluation, 3), 1, True)
     print(tally)
     print("Average Decision Times:", avg)
 
