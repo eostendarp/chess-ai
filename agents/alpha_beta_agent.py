@@ -10,6 +10,11 @@ class AlphaBetaAgent(BaseAgent):
         self.maximum_depth = maximum_depth
 
     def get_move(self, board):
+        """
+        Top level function for alpha_beta
+        :param board: Board object
+        :return: returns a Move object to be used in chess_game.py
+        """
         current_depth = 0
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
@@ -33,6 +38,17 @@ class AlphaBetaAgent(BaseAgent):
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth):
+        """
+        alpha beta implementation for pruning of decision tree
+        :param board: Board object
+        :param heuristic: function name of the heuristic to be used for evaluation
+        :param alpha: alpha value
+        :param beta: beta value
+        :param max_turn: Bool
+        :param current_depth: int
+        :param maximum_depth: int
+        :return: the best score calculated for a move
+        """
 
         if current_depth == maximum_depth or board.is_game_over():
             return heuristic(board, self.color, max_turn)
@@ -60,14 +76,3 @@ class AlphaBetaAgent(BaseAgent):
                 beta = min(beta, best_score)
 
         return best_score
-
-    def move_ordering(self, moves, board, max_turn, color):
-        move_values = []
-        for move in moves:
-            board.push_uci(move.uci())
-            score = self.heuristic(board, color)
-            move_values.append({'move': move, 'value': score})
-            board.pop()
-
-        ordered = sorted(move_values, key=lambda x: x['value'], reverse=True if max_turn else False)
-        return [x['move'] for x in ordered]
