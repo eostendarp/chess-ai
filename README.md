@@ -64,6 +64,6 @@ This project is a joint effort between [Erich Ostendarp](https://github.com/eost
   
 # Run Yourself:
 
-  clone the repository, setup you virtual envionment and **pip install python-chess**
+  Clone the repository, setup you virtual envionment and **pip install python-chess**
   
   Then run the **run()** function in *chess_game.py* to have two agents play against eachother. To change the agents that compete, import an agent fom the *agents* directory and replace either agent1 or agent2 in the **run()** function
