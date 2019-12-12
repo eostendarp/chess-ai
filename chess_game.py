@@ -13,6 +13,7 @@ from utils import trans_table_utils as ttu
 from os import getcwd
 from agents.combined_agent import CombinedAgent
 from agents.combined_agent_trans import CombinedAgentTrans
+from agents.human_agent import HumanAgent
 
 
 class ChessGame:
@@ -113,8 +114,8 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [CombinedAgent(True, combined, 3, load_hh=True), CombinedAgentTrans(False, combined, 3, load_hh=True)]
-    tally, avg = compare_agents(agent1, agent2, 1, True)
+    agent1, agent2 = [HumanAgent(True), CombinedAgent(False, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 5, True)
     ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)

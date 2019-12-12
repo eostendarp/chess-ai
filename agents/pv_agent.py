@@ -29,14 +29,14 @@ class PVAgent(BaseAgent):
             board.pop()
 
             if score > best_score:
-                print(score)
-                print(move)
+                #print(score)
+                #print(move)
                 best_score = score
                 best_move = move
 
         self.pv_line.reverse()
-        print("AlphaBeta:", best_score)
-        print("Best Move:", best_move)
+        #print("AlphaBeta:", best_score)
+        #print("Best Move:", best_move)
         print(self.pv_line)
         return best_move
 
@@ -52,7 +52,7 @@ class PVAgent(BaseAgent):
                 best.append(curr_score)
                 return curr_score
             else:
-                return best[0]
+                return curr_score
 
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)

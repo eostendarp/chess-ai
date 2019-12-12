@@ -74,7 +74,7 @@ class CombinedAgent(BaseAgent):
                 best.append(curr_score)
                 return curr_score
             else:
-                return best[0]
+                return curr_score
 
         possible_moves = get_possible_moves(board, max_turn, self.pv_line, self.maximum_depth - depth, history=self.history)
 

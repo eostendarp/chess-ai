@@ -4,6 +4,7 @@ Add heuristics here
 from chess import *
 from typing import Dict, List
 import collections
+import random
 from utils.state_identifier import eval_boardstate
 
 
