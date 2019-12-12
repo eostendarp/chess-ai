@@ -7,6 +7,7 @@ from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
 from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
+from utils.tapered_evaluation import tapered_evaluation
 from agents.combined_agent import CombinedAgent
 from utils import trans_table_utils as ttu
 from os import getcwd
