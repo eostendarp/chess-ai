@@ -60,3 +60,8 @@ This project is a joint effort between [Erich Ostendarp](https://github.com/eost
 # Environment:
 
   The chess game environment that we worked in is all thanks to the [python-chess](https://python-chess.readthedocs.io/en/latest/) library and is required for the code to run.
+  
+  
+# Run Yourself:
+
+  clone the repository, setup you virtual envionment and **pip install python-chess**
