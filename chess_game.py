@@ -44,6 +44,11 @@ class ChessGame:
         return end_state
 
     def play_round(self, display_move=False):
+        """
+        Plays a single round of a game facilitates a single turn for each agent
+        :param display_move: (optional) bool to display the board
+        :return:
+        """
         start = datetime.utcnow()
         self.play_move(self.agent1)
         self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()

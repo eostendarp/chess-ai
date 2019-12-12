@@ -37,6 +37,13 @@ def get_piece_value(piece: Piece, color: bool) -> int:
 
 
 def general_mobility(board: Board, max_turn: bool, state) -> int:
+    """
+    Heuristic to calculate the mobility of each piece, weighting for each changes with game state
+    :param board: Board object
+    :param max_turn: Bool
+    :param state: dict
+    :return: int value of mobility
+    """
     if state['opening']:
         piece_mobility_values = {PAWN: 6, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 2, KING: 0}
     elif state['middlegame']:
@@ -90,10 +97,17 @@ def mvvlva(board: Board, color: bool):
     return moves
 
 
-# winning capture = small piece captures bigger piece e.g. pawn captures knight
-# nuetral capture = piece captures other piece of same value
-# losing capture = higher value piece captures lower value piece
+
 def capture_moves(board: Board, color: bool):
+    """
+    Returns all possible capture moves for a given board state
+    Winning capture = small piece captures bigger piece e.g. pawn captures knight
+    Neutral capture = piece captures other piece of same value
+    Losing capture = higher value piece captures lower value piece
+    :param board: Board object
+    :param color: Bool
+    :return: dictionary containing lists of different types of captures
+    """
     pieces = PIECE_TYPES[:-1]
     can_be_captured = []
     # find piece locations for opponents
@@ -138,7 +152,7 @@ def capture_moves(board: Board, color: bool):
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
-    state = eval_boardstate(board, max_turn)
+    state = eval_boardstate(board, color, max_turn)
     score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn, state)
     return score
 
@@ -186,7 +200,7 @@ def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     non_captures = [move for move in legal_moves if move not in captures['winning'] and move not in captures['neutral'] and move not in captures['losing']]
 
     # sort non_captures with HH:
-    sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
+    sorted_non_caps = sort_non_captures(history, turn, non_captures, board) if history is not None else []
 
     move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
 
