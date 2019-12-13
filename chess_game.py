@@ -119,4 +119,4 @@ def run():
     print(tally)
     print("Average Decision Times:", avg)
 
-run()
+#run()
