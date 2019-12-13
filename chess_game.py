@@ -105,8 +105,6 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
-    write_history_table(agent1)
-
     return tally, average_move_time
 
 
@@ -119,9 +117,9 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [HumanAgent(True), CombinedAgent(False, combined, 3, load_hh=True)]
-    tally, avg = compare_agents(agent1, agent2, 5, True)
-    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
+    agent1, agent2 = [MiniMaxAgent(False, piece_value_heuristic, 2), CombinedAgentTrans(True, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 5, False)
+    # ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 

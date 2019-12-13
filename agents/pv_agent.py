@@ -83,14 +83,3 @@ class PVAgent(BaseAgent):
                 beta = min(beta, best_score)
 
         return best_score
-
-    def move_ordering(self, moves, board, max_turn, color):
-        move_values = []
-        for move in moves:
-            board.push_uci(move.uci())
-            score = self.heuristic(board, color)
-            move_values.append({'move': move, 'value': score})
-            board.pop()
-
-        ordered = sorted(move_values, key=lambda x: x['value'], reverse=True if max_turn else False)
-        return [x['move'] for x in ordered]
