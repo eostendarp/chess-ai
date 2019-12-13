@@ -113,9 +113,9 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [CombinedAgent(True, combined, 3, load_hh=True), CombinedAgentTrans(False, combined, 3, load_hh=True)]
-    tally, avg = compare_agents(agent1, agent2, 1, True)
-    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
+    agent1, agent2 = [CombinedAgent(True, tapered_evaluation, 3, load_hh=True), CombinedAgent(False, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 3, False)
+    #ttu.write_trans_table(agent1.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 

@@ -23,7 +23,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
     if piece is None:
         return 0
 
-    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 100}
+    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 0}
 
     value = 0
 
@@ -137,7 +137,7 @@ def capture_moves(board: Board, color: bool):
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
-    state = eval_boardstate(board, max_turn)
+    state = eval_boardstate(board, color, max_turn)
     score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn, state)
     return score
 
