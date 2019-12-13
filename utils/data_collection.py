@@ -86,17 +86,17 @@ def generate_data(white_agent_name, black_agent_name, white_agent, black_agent, 
 
 
 def main():
-    # generate_data('random', RandAgent(chess.WHITE), 'random', RandAgent(chess.BLACK), getcwd()[:-5] + 'data/RvR.csv')
-    # generate_data('random', RandAgent(chess.WHITE), 'alphabeta', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/RvA.csv')
-    # generate_data('minimax', MiniMaxAgent(chess.WHITE, combined, 2), 'alphabeta', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/MvA.csv')
+    generate_data('random', RandAgent(chess.WHITE), 'random', RandAgent(chess.BLACK), getcwd()[:-5] + 'data/RvR.csv')
+    generate_data('random', RandAgent(chess.WHITE), 'alphabeta', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/RvA.csv')
+    generate_data('minimax', MiniMaxAgent(chess.WHITE, combined, 2), 'alphabeta', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/MvA.csv')
     generate_data('alphabeta', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvA.csv')
-    # generate_data('alphabeta', AlphaBetaAgent(chess.WHITE), 'history', OrderedAgent(chess.BLACK), getcwd()[:-5] + 'data/AvH.csv')
-    generate_data('alphabeta', AlphaBetaAgent(chess.WHITE, combined, 2), 'pv', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvP.csv')
-    # generate_data('alphabeta', AlphaBetaAgent(chess.WHITE), 'combined', CombinedAgent(chess.BLACK), getcwd()[:-5] + 'data/AvC.csv')
-    # generate_data('history', OrderedAgent(chess.WHITE), 'history', OrderedAgent(chess.BLACK), getcwd()[:-5] + 'data/HvH.csv')
-    generate_data('pv', PVAgent(chess.WHITE, combined, 2), 'pv', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/PvP.csv')
-    # generate_data('combined', CombinedAgent(chess.WHITE), 'combined', CombineAgent(chess.BLACK), getcwd()[:-5] + 'data/HvH.csv')
+    # generate_data('alphabeta', AlphaBetaAgent(chess.WHITE, combined, 2), 'history', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvH.csv')
+    # generate_data('alphabeta', AlphaBetaAgent(chess.WHITE, combined, 2), 'pv', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvP.csv')
+    # generate_data('alphabeta', AlphaBetaAgent(chess.WHITE, combined, 2), 'combined', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvC.csv')
+    # generate_data('history', OrderedAgent(chess.WHITE, combined, 2), 'history', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/HvH.csv')
+    # generate_data('pv', PVAgent(chess.WHITE, combined, 2), 'pv', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/PvP.csv')
+    # generate_data('combined', CombinedAgent(chess.WHITE, combined, 2), 'combined', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/HvH.csv')
 
 
-if __name__ == '__main__':
+if __name__ == '__main_':
     main()
