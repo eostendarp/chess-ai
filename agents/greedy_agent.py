@@ -5,10 +5,18 @@ from chess import *
 
 
 class GreedyAgent(BaseAgent):
+    """
+    Greedy Agent Prioritizes Captures, does not score using a heuristic
+    """
     def __init__(self, color: bool):
         super().__init__(color)
 
     def get_move(self, board: Board) -> Move:
+        """
+        Picks move from a board that captures a piece, and picks that
+        :param board: chess board
+        :return: a valid move
+        """
         board_copy = deepcopy(board)
         if not board.is_game_over():
             for move in board.legal_moves:
