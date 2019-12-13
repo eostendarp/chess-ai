@@ -1,9 +1,18 @@
 import chess
 from chess import BISHOP
 from datetime import datetime
+
+from agents.base_agent import BaseAgent
+from agents.combined_agent_trans import CombinedAgentTrans
+from agents.greedy_agent import GreedyAgent
+from agents.history_agent import OrderedAgent
+from agents.history_agent_trans import OrderedAgentTrans
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
 from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
+from agents.minimax_agent_trans import MiniMaxAgentTrans
+from agents.pv_agent_trans import PVAgentTrans
+from agents.random_agent import RandAgent
 from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
@@ -109,10 +118,23 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [CombinedAgent(True, combined, 3), AlphaBetaAgentTrans(False, combined, 3)]
-    tally, avg = compare_agents(agent1, agent2, 1, True)
+    agent1, agent2 = [AlphaBetaAgent(WHITE), AlphaBetaAgentTrans(BLACK, combined, 3)]
+    tally, avg = compare_agents(agent1, agent2, 10, True)
     ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/alpha_beta/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 
 run()
+
+
+def generate_csv():
+    agents = [AlphaBetaAgent, CombinedAgent, GreedyAgent, MiniMaxAgent, OrderedAgent, PVAgent, RandAgent]
+    trans_agents = [AlphaBetaAgentTrans, CombinedAgentTrans, MiniMaxAgentTrans, OrderedAgentTrans, PVAgentTrans]
+    white_agents = [agent(WHITE) for agent in agents]
+    black_agents = [agent(BLACK) for agent in agents]
+    trans_white_agents = [agent(WHITE) for agent in trans_agents]
+    trans_black_agents = [agent(BLACK) for agent in trans_agents]
+
+    for game_num in range(100):
+        for white_agent in white_agents:
+            for black_agent in black_agents:

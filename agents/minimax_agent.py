@@ -37,7 +37,7 @@ class MiniMaxAgent(BaseAgent):
     def minimax(self, board: Board, heuristic, max_turn: int, current_depth: int, maximum_depth: int) -> int:
 
         if current_depth == maximum_depth or board.is_game_over():
-            return heuristic(board, self.color)
+            return heuristic(board, self.color, max_turn)
 
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
