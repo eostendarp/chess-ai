@@ -3,6 +3,13 @@ from random import shuffle
 
 
 class PVAgent(BaseAgent):
+    """
+    Constructor for our Agent with Principal Variation Line
+    :param color: Boolean for White (True) or Black (False)
+    heuristic: Function passed in to score the board
+    maximum_depth: Maximum depth the agent will go
+    load_hh: will change if History Heuristic Tables are loaded in
+    """
     def __init__(self, color, heuristic, maximum_depth):
         super().__init__(color)
         self.heuristic = heuristic
@@ -10,6 +17,11 @@ class PVAgent(BaseAgent):
         self.pv_line = []
 
     def get_move(self, board):
+        """
+        Top level function for alpha_beta
+        :param board: Board object
+        :return: returns a Move object to be used in chess_game.py
+        """
         current_depth = 0
         possible_moves = [move for move in board.legal_moves]
         shuffle(possible_moves)
@@ -41,6 +53,17 @@ class PVAgent(BaseAgent):
         return best_move
 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, current_depth, maximum_depth, best, pline):
+        """
+        Basic Alpha Beta but calculates a Principal Variation Line As Well
+        :param board: chess board
+        :param heuristic: heuristic function
+        :param alpha: alpha value
+        :param beta: beta value
+        :param max_turn: maximum depth you wanna go to
+        :param depth: current depth
+        :param best: best score
+        :return: best move
+        """
         original_best = best[0]
 
         if current_depth == maximum_depth or board.is_game_over():

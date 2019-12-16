@@ -1,4 +1,5 @@
 import chess
+import chess.svg
 from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
@@ -116,6 +117,7 @@ def capture_test():
 
 
 def run():
+
     print("Comparing Agents")
     agent1, agent2 = [MiniMaxAgent(False, piece_value_heuristic, 2), CombinedAgentTrans(True, combined, 3, load_hh=True)]
     tally, avg = compare_agents(agent1, agent2, 5, False)

@@ -8,6 +8,13 @@ import os
 
 
 class CombinedAgent(BaseAgent):
+    """
+    Constructor for our Agent with Proper Move Ordering
+    :param color: Boolean for White (True) or Black (False)
+    heuristic: Function passed in to score the board
+    maximum_depth: Maximum depth the agent will go
+    load_hh: will change if History Heuristic Tables are loaded in
+    """
     def __init__(self, color, heuristic, maximum_depth, load_hh=False):
         super().__init__(color)
         self.name='combined'
@@ -68,6 +75,17 @@ class CombinedAgent(BaseAgent):
 
                 
     def alpha_beta(self, board, heuristic, alpha, beta, max_turn, depth, best):
+        """
+        Same as Alpha Beta from PV Agent
+        :param board: chess board
+        :param heuristic: heuristic function
+        :param alpha: alpha value
+        :param beta: beta value
+        :param max_turn: maximum depth you wanna go to
+        :param depth: current depth
+        :param best: best score
+        :return: best move
+        """
 
         original_best = best[0]
 
