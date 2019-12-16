@@ -8,7 +8,7 @@ import os
 from utils import trans_table_utils as ttu
 
 
-class OrderedAgent(BaseAgent):
+class OrderedAgentTrans(BaseAgent):
     def __init__(self, color, heuristic, maximum_depth, load_hh=False):
         super().__init__(color)
         self.heuristic = heuristic
