@@ -32,6 +32,11 @@ class CombinedAgent(BaseAgent):
         return table
 
     def get_move(self, board):
+        """
+        Top level function for alpha_beta
+        :param board: Board object
+        :return: returns a Move object to be used in chess_game.py
+        """
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
@@ -74,7 +79,7 @@ class CombinedAgent(BaseAgent):
                 best.append(curr_score)
                 return curr_score
             else:
-                return best[0]
+                return curr_score
 
         possible_moves = get_possible_moves(board, max_turn, self.pv_line, self.maximum_depth - depth, history=self.history)
 

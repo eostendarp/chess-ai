@@ -6,7 +6,6 @@ def eval_boardstate(board, color, max_turn):
     eval_op = _eval_opening(board, color)
     eval_mg = _eval_middlegame(board, color)
     eval_eg = _eval_endgame(board, color)
-    #print(f"Opening Score: {eval_op} Middlegame Score: {eval_mg} Endgame Score: {eval_eg}")
     state = {"opening": 0, "middlegame": 0, "endgame": 0}
     if eval_op > eval_mg and eval_op > eval_eg:
         state["opening"] = 1
