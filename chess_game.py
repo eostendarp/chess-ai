@@ -1,5 +1,4 @@
 import chess
-import chess.svg
 from chess import BISHOP
 from datetime import datetime
 from agents.minimax_agent import MiniMaxAgent
@@ -14,7 +13,6 @@ from utils import trans_table_utils as ttu
 from os import getcwd
 from agents.combined_agent import CombinedAgent
 from agents.combined_agent_trans import CombinedAgentTrans
-from agents.human_agent import HumanAgent
 
 
 class ChessGame:
@@ -45,18 +43,14 @@ class ChessGame:
         return end_state
 
     def play_round(self, display_move=False):
-        """
-        Plays a single round of a game facilitates a single turn for each agent
-        :param display_move: (optional) bool to display the board
-        :return:
-        """
         start = datetime.utcnow()
-        self.play_move(self.agent1)
-        self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
-        self.moves_made[self.agent1.color] += 1
 
         if display_move:
             print(str(self.board.unicode(borders=True)) + "\n")
+
+        self.play_move(self.agent1)
+        self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
+        self.moves_made[self.agent1.color] += 1
 
         start = datetime.utcnow()
         self.play_move(self.agent2)
@@ -106,6 +100,8 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
+    write_history_table(agent1)
+
     return tally, average_move_time
 
 
@@ -117,12 +113,11 @@ def capture_test():
 
 
 def run():
-
     print("Comparing Agents")
-    agent1, agent2 = [MiniMaxAgent(False, piece_value_heuristic, 2), CombinedAgentTrans(True, combined, 3, load_hh=True)]
-    tally, avg = compare_agents(agent1, agent2, 5, False)
-    # ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
+    agent1, agent2 = [CombinedAgent(True, tapered_evaluation, 3, load_hh=True), CombinedAgent(False, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 3, False)
+    #ttu.write_trans_table(agent1.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 
-run()
+#run()
