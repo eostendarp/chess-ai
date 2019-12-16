@@ -6,7 +6,7 @@ from os import getcwd
 from utils import trans_table_utils as ttu
 
 
-class MiniMaxAgent(BaseAgent):
+class MiniMaxAgentTrans(BaseAgent):
     def __init__(self, color: bool, heuristic, maximum_depth: int):
         super().__init__(color)
         self.heuristic = heuristic

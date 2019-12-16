@@ -9,6 +9,13 @@ from utils.state_identifier import eval_boardstate
 
 
 def piece_value_heuristic(board: Board, color: bool, max_turn) -> int:
+    """
+    Values each piece and calculates the total board score for either side based on every piece
+    :param board: the chess board
+    :param color: the current players color
+    :param max_turn: bool
+    :return: the total board score
+    """
     score = 0
     opponent = not color
     board_size: int = 64
@@ -21,6 +28,12 @@ def piece_value_heuristic(board: Board, color: bool, max_turn) -> int:
 
 
 def get_piece_value(piece: Piece, color: bool) -> int:
+    """
+    Helper function for piece value herustic, values each individual piece
+    :param piece: the current piece
+    :param color: color of the player
+    :return: piece value
+    """
     if piece is None:
         return 0
 
@@ -152,6 +165,13 @@ def capture_moves(board: Board, color: bool):
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
+    """
+    Combined version of mobility and piece value heuristic
+    :param board: chess board
+    :param color: current players color
+    :param max_turn: if its the max turn
+    :return: board value
+    """
     state = eval_boardstate(board, color, max_turn)
     score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn, state)
     return score

@@ -33,7 +33,7 @@ class OrderedAgent(BaseAgent):
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
-        possible_moves = get_possible_moves(board, self.color, history=self.history)
+        possible_moves = get_possible_moves(board, self.color, [], 0, history=self.history)
         best_move = None
         best_score = float('-inf')
 
@@ -63,7 +63,7 @@ class OrderedAgent(BaseAgent):
         # shuffle(moves)
         # possible_moves = captures + moves
 
-        possible_moves = get_possible_moves(board, max_turn, history=self.history)
+        possible_moves = get_possible_moves(board, max_turn, [], 0, history=self.history)
 
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:

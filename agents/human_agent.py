@@ -4,10 +4,20 @@ from copy import deepcopy
 
 
 class HumanAgent(BaseAgent):
+    """
+    Constructor for our Agent with Proper Move Ordering
+    :param color: Boolean for White (True) or Black (False)
+    """
     def __init__(self, color):
         super().__init__(color)
 
     def get_move(self, board):
+        """
+        Returns the player enters, and makes sure it is valid
+        :param board: the chess board
+        :return: the players move, formatted
+        """
+
         valid_moves = [move for move in board.legal_moves]
         is_valid_move = False
         while not is_valid_move:

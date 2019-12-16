@@ -4,7 +4,7 @@ from os import getcwd
 from utils import trans_table_utils as ttu
 
 
-class PVAgent(BaseAgent):
+class PVAgentTrans(BaseAgent):
     def __init__(self, color, heuristic, maximum_depth):
         super().__init__(color)
         self.heuristic = heuristic
