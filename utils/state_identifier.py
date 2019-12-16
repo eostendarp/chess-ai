@@ -2,7 +2,7 @@ from chess import Board
 import math
 
 
-def eval_boardstate(board, color):
+def eval_boardstate(board, color, max_turn):
     eval_op = _eval_opening(board, color)
     eval_mg = _eval_middlegame(board, color)
     eval_eg = _eval_endgame(board, color)
@@ -20,7 +20,9 @@ def eval_boardstate(board, color):
 
 def _eval_opening(board, color):
     eval = 0
-    if len(board.move_stack) == 0:
+    if 12 > len(board.move_stack) > 0:
+        eval += 600 * 1/len(board.move_stack)
+    elif len(board.move_stack) == 0:
         eval = math.inf
     return eval
 
@@ -28,8 +30,10 @@ def _eval_opening(board, color):
 def _eval_middlegame(board, color):
     eval = 0
     eval += _attacking_king_zone_mg(board, color)
+    eval += _material_mg(board, color)
     eval += _mobility_mg(board, color)
     eval += _pawn_structure_mg(board, color)
+    eval = eval *.75
     return eval
 
 
@@ -38,6 +42,21 @@ def _eval_endgame(board, color):
     eval += _king_mobility_eg(board, color)
     eval += _material_eg(board, color)
     return eval
+
+
+def _material_mg(board, color):
+    PAWN_VAL = 1
+    BISHOP_VAL = 2
+    KNIGHT_VAL = 2
+    ROOK_VAL = 3
+    QUEEN_VAL = 5
+
+    num_pieces = 0
+    for _ in range(1, 6):
+        for color in range(1, 2):
+            num_pieces += len(board.pieces(_, color))
+    material = num_pieces * 7
+    return material
 
 
 def _attacking_king_zone_mg(board, color):
@@ -209,8 +228,6 @@ def _middlegame_OLD(board, color) -> int:
             unmoved_pawns += 1
     pawn_structure_score = -1 * (unmoved_pawns * 10)
     middlegame_score += pawn_structure_score
-    print(
-        f"King Attack Score: {king_attack_score}, Pawn Shield: {pawn_shield}, Pawn Structure: {pawn_structure_score}, Mobility: {mobility}")
     return middlegame_score
 
 
@@ -240,14 +257,14 @@ def _endgame_OLD(board, color) -> int:
     return endgame_score
 
 
-def tapered_eval(board: Board, color) -> int:
+def tapered_eval(board: Board, color, max_turn) -> int:
     # Returns a tapered eval score for the current board, this allows for smooth state changing
     middlegame_score = _middlegame_OLD(board, color)
     endgame_score = _endgame_OLD(board, color)
     phase = _phase(board)
     eval_ = ((middlegame_score * (256 - phase)) + (endgame_score * phase)) / 256
 
-    print(f"Middle: {middlegame_score} End: {endgame_score} Eval: {eval_}")
+    #print(f"Eval: {eval_}")
 
     return eval_
 

@@ -34,7 +34,7 @@ class MiniMaxAgent(BaseAgent):
 
         return best_move
 
-    def minimax(self, board: Board, heuristic, max_turn: int, current_depth: int, maximum_depth: int) -> int:
+    def minimax(self, board: Board, heuristic, max_turn: bool, current_depth: int, maximum_depth: int) -> int:
 
         if current_depth == maximum_depth or board.is_game_over():
             return heuristic(board, self.color, max_turn)

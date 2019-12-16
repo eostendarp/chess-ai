@@ -1,24 +1,20 @@
 import chess
 from chess import BISHOP
 from datetime import datetime
-
-from agents.base_agent import BaseAgent
-from agents.combined_agent_trans import CombinedAgentTrans
-from agents.greedy_agent import GreedyAgent
-from agents.history_agent import OrderedAgent
-from agents.history_agent_trans import OrderedAgentTrans
 from agents.minimax_agent import MiniMaxAgent
 from agents.alpha_beta_agent import AlphaBetaAgent
 from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
-from agents.minimax_agent_trans import MiniMaxAgentTrans
-from agents.pv_agent_trans import PVAgentTrans
-from agents.random_agent import RandAgent
 from utils.heuristics import combined, piece_value_heuristic, mvvlva, capture_moves
 from utils.history_utils import *
 from agents.pv_agent import PVAgent
+from utils.tapered_evaluation import tapered_evaluation
 from agents.combined_agent import CombinedAgent
 from utils import trans_table_utils as ttu
 from os import getcwd
+from agents.combined_agent import CombinedAgent
+from agents.combined_agent_trans import CombinedAgentTrans
+from agents.human_agent import HumanAgent
+
 
 class ChessGame:
 
@@ -48,6 +44,11 @@ class ChessGame:
         return end_state
 
     def play_round(self, display_move=False):
+        """
+        Plays a single round of a game facilitates a single turn for each agent
+        :param display_move: (optional) bool to display the board
+        :return:
+        """
         start = datetime.utcnow()
         self.play_move(self.agent1)
         self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
@@ -104,8 +105,6 @@ def compare_agents(agent1, agent2, num_games, display_moves=False):
         if display_moves:
             print(str(game.board.unicode(borders=True)) + "\n")
 
-    #write_history_table(agent1.history)
-
     return tally, average_move_time
 
 
@@ -118,23 +117,10 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [AlphaBetaAgent(WHITE), AlphaBetaAgentTrans(BLACK, combined, 3)]
-    tally, avg = compare_agents(agent1, agent2, 10, True)
-    ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/alpha_beta/trans_table.pickle')
+    agent1, agent2 = [MiniMaxAgent(False, piece_value_heuristic, 2), CombinedAgentTrans(True, combined, 3, load_hh=True)]
+    tally, avg = compare_agents(agent1, agent2, 5, False)
+    # ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
     print("Average Decision Times:", avg)
 
 run()
-
-
-def generate_csv():
-    agents = [AlphaBetaAgent, CombinedAgent, GreedyAgent, MiniMaxAgent, OrderedAgent, PVAgent, RandAgent]
-    trans_agents = [AlphaBetaAgentTrans, CombinedAgentTrans, MiniMaxAgentTrans, OrderedAgentTrans, PVAgentTrans]
-    white_agents = [agent(WHITE) for agent in agents]
-    black_agents = [agent(BLACK) for agent in agents]
-    trans_white_agents = [agent(WHITE) for agent in trans_agents]
-    trans_black_agents = [agent(BLACK) for agent in trans_agents]
-
-    for game_num in range(100):
-        for white_agent in white_agents:
-            for black_agent in black_agents:

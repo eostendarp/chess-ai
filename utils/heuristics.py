@@ -4,6 +4,7 @@ Add heuristics here
 from chess import *
 from typing import Dict, List
 import collections
+import random
 from utils.state_identifier import eval_boardstate
 
 
@@ -35,10 +36,16 @@ def get_piece_value(piece: Piece, color: bool) -> int:
     return value
 
 
-def general_mobility(board: Board, max_turn: bool) -> int:
-    state = eval_boardstate(board, max_turn)
+def general_mobility(board: Board, max_turn: bool, state) -> int:
+    """
+    Heuristic to calculate the mobility of each piece, weighting for each changes with game state
+    :param board: Board object
+    :param max_turn: Bool
+    :param state: dict
+    :return: int value of mobility
+    """
     if state['opening']:
-        piece_mobility_values = {PAWN: 5, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 3, KING: 1}
+        piece_mobility_values = {PAWN: 6, KNIGHT: 8, BISHOP: 8, ROOK: 5, QUEEN: 2, KING: 0}
     elif state['middlegame']:
         piece_mobility_values = {PAWN: 2, KNIGHT: 5, BISHOP: 5, ROOK: 6, QUEEN: 6, KING: 1}
     elif state['endgame']:
@@ -55,7 +62,7 @@ def general_mobility(board: Board, max_turn: bool) -> int:
     if not max_turn:
         mobility_score = mobility_score * -1
 
-    return mobility_score
+    return int(mobility_score/2)
 
 
 # Find potential victims -> then for each victim find least valuable aggressor
@@ -90,10 +97,17 @@ def mvvlva(board: Board, color: bool):
     return moves
 
 
-# winning capture = small piece captures bigger piece e.g. pawn captures knight
-# nuetral capture = piece captures other piece of same value
-# losing capture = higher value piece captures lower value piece
+
 def capture_moves(board: Board, color: bool):
+    """
+    Returns all possible capture moves for a given board state
+    Winning capture = small piece captures bigger piece e.g. pawn captures knight
+    Neutral capture = piece captures other piece of same value
+    Losing capture = higher value piece captures lower value piece
+    :param board: Board object
+    :param color: Bool
+    :return: dictionary containing lists of different types of captures
+    """
     pieces = PIECE_TYPES[:-1]
     can_be_captured = []
     # find piece locations for opponents
@@ -138,7 +152,8 @@ def capture_moves(board: Board, color: bool):
 
 
 def combined(board: Board, color: bool, max_turn: bool) -> int:
-    score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn)
+    state = eval_boardstate(board, color, max_turn)
+    score = piece_value_heuristic(board, color, max_turn) + general_mobility(board, max_turn, state)
     return score
 
 
@@ -154,7 +169,7 @@ def sort_non_captures(history, turn, moves, board):
     return [m['move'] for m in sorted_non_caps]
 
 
-def get_possible_moves(board, turn, pv_line, history=None):
+def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     """
     returns a list of possible moves that can be made by the agent
     uses mvvlva and history table for move ordering
@@ -165,20 +180,29 @@ def get_possible_moves(board, turn, pv_line, history=None):
     """
     legal_moves = board.legal_moves
     pv = []
-    if len(pv_line) > 1:
+    '''
+    if len(pv_line) > 1 and turn:
         pv = [pv_line[1]] if pv_line[1] in legal_moves else []
-        pv_line.pop()
+
+    if len(pv_line) > 0 and not turn:
+        pv = [pv_line[0]] if pv_line[0] in legal_moves else []
+    '''
+    if len(pv_line) > current_depth+1:
+        pv = [pv_line[current_depth+1]] if pv_line[current_depth+1] in legal_moves else []
+
+
+
 
     # Get sorted capture moves:
     captures = capture_moves(board, turn)
 
     # get non-captures:
-    non_captures = [move for move in legal_moves if move not in captures]
+    non_captures = [move for move in legal_moves if move not in captures['winning'] and move not in captures['neutral'] and move not in captures['losing']]
 
     # sort non_captures with HH:
-    sorted_non_caps = sort_non_captures(history, turn, non_captures, board)
+    sorted_non_caps = sort_non_captures(history, turn, non_captures, board) if history is not None else []
 
-    move_list = pv + captures['winning'] + captures['neutral'] + captures['losing'] + non_captures
+    move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
 
     return move_list
 
