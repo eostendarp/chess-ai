@@ -21,7 +21,7 @@ def main():
         depth = 4
 
     demo_human_agent = HumanAgent(True)
-    demo_opponent_agent = CombinedAgentTrans(False, combined, diff)
+    demo_opponent_agent = CombinedAgentTrans(False, combined, depth)
 
     demo_game = ChessGame(demo_human_agent, demo_opponent_agent)
     demo_game.play_game(True)

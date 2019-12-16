@@ -44,12 +44,13 @@ class ChessGame:
 
     def play_round(self, display_move=False):
         start = datetime.utcnow()
-        self.play_move(self.agent1)
-        self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
-        self.moves_made[self.agent1.color] += 1
 
         if display_move:
             print(str(self.board.unicode(borders=True)) + "\n")
+
+        self.play_move(self.agent1)
+        self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
+        self.moves_made[self.agent1.color] += 1
 
         start = datetime.utcnow()
         self.play_move(self.agent2)
