@@ -119,7 +119,7 @@ def capture_test():
 def run():
 
     print("Comparing Agents")
-    agent1, agent2 = [MiniMaxAgent(False, piece_value_heuristic, 2), CombinedAgentTrans(True, combined, 3, load_hh=True)]
+    agent1, agent2 = [HumanAgent(False), CombinedAgentTrans(True, combined, 3, load_hh=True)]
     tally, avg = compare_agents(agent1, agent2, 5, False)
     # ttu.write_trans_table(agent2.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
     print(tally)
