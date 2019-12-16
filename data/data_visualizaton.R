@@ -10,6 +10,12 @@ ava <- read.csv('data/AvA.csv', sep='\t')
 rva <- read.csv('data/RvA.csv', sep='\t')
 mva <- read.csv('data/MvA.csv', sep='\t')
 
+# avh <- read.csv('data/AvH', sep='\t')
+# avp <- read.csv('data/AvP', sep='\t')
+# avc <- read.csv('data/AvC', sep='\t')
+# hvh <- read.csv('data/HvH', sep='\t')
+# pvp <- read.csv('data/PvP', sep='\t')
+# cvc <- read.csv('data/CvC', sep='\t')
 
 print('color win rate')
 
@@ -38,76 +44,59 @@ sum(filter(mva, agent_type=='alphabeta' & game_result==1)$game_result) / 100
 
 
 # check data for anomalies
-g1 <- ggplot(rvr, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
-g2 <- ggplot(ava, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+ggplot(rvr, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+ggplot(ava, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
 
-g3 <- ggplot(rva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
-g4 <- ggplot(mva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
+ggplot(rva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
+ggplot(mva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
 
 
 # decision times
 
 # color
-g5 <- ggplot(rvr, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
-g6 <- ggplot(ava, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
+ggplot(rvr, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
+ggplot(ava, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
 
 # agent
-g7 <- ggplot(rva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
-g8 <- ggplot(mva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
+ggplot(rva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
+ggplot(mva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
 
 
-# num moves
-
-# color
-g9 <- ggplot(rvr, aes(x=agent_num_moves)) + geom_histogram()
-g10 <- ggplot(ava, aes(x=agent_num_moves)) + geom_histogram()
-
-# agent
-g11 <- ggplot(rva, aes(x=agent_num_moves)) + geom_histogram()
-g12 <- ggplot(mva, aes(x=agent_num_moves)) + geom_histogram()
+# Different distributions of moves for different agents
+ggplot(rvr, aes(x=agent_num_moves)) + geom_histogram()
+ggplot(ava, aes(x=agent_num_moves)) + geom_histogram()
 
 
 # decision time vs. wins
-g13 <- ggplot(rvr, aes(x=game_result, y=agent_decision_time)) + geom_histogram(stat='identity')
-g14 <- ggplot(ava, aes(x=game_result, y=agent_decision_time)) + geom_histogram(stat='identity')
-
-g15 <- ggplot(mva, aes(x=game_result, y=agent_decision_time, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
+ggplot(mva, aes(x=game_result, y=agent_decision_time, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
 
 
 # num moves vs. wins
-g16 <- ggplot(rvr, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
-g17 <- ggplot(ava, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
+ggplot(rvr, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
+ggplot(ava, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
 
-g18 <- ggplot(mva, aes(x=game_result, y=agent_num_moves, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
+ggplot(mva, aes(x=game_result, y=agent_num_moves, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
 
 
 # num moves vs. decision time
-g19 <- ggplot(rvr, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
-g20 <- ggplot(ava, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
+ggplot(rvr, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
+ggplot(ava, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
 
-g21 <- ggplot(rva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
-g22 <- ggplot(mva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
+ggplot(rva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
+ggplot(mva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
 
-g1
-g2
-g3
-g4
 
-g5
-g6
-g7
-g8
-g9
-g10
-g11
-g12
-g13
-g14
-g15
-g16
-g17
-g18
-g19
-g20
-g21
-g22
+# Transposition Tables
+avat <- read.csv('data/AvAT.csv', sep='\t')
+ggplot(avat, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
+
+
+# Different Depths
+a1va2 <- read.csv('data/A1vA2.csv', sep='\t')
+ggplot(a1va2, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+
+a1va3 <- read.csv('data/A1vA3.csv', sep='\t')
+ggplot(a1va3, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+
+a2va3 <- read.csv('data/A2vA3.csv', sep='\t')
+ggplot(a2va3, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
