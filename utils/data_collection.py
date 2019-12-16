@@ -8,13 +8,9 @@ from utils.heuristics import combined
 from agents.alpha_beta_agent import AlphaBetaAgent
 from agents.alpha_beta_agent_trans import AlphaBetaAgentTrans
 from agents.combined_agent import CombinedAgent
-from agents.combined_agent_trans import CombinedAgentTrans
 from agents.history_agent import OrderedAgent
-from agents.history_agent_trans import OrderedAgentTrans
 from agents.minimax_agent import MiniMaxAgent
-from agents.minimax_agent_trans import MiniMaxAgentTrans
 from agents.pv_agent import PVAgent
-from agents.pv_agent_trans import PVAgentTrans
 from agents.random_agent import RandAgent
 
 
@@ -86,27 +82,24 @@ def generate_data(white_agent_name, black_agent_name, white_agent, black_agent, 
 
 
 def main():
-    # run
-    pass
-    # generate_data('random', RandAgent(chess.WHITE), 'random', RandAgent(chess.BLACK), getcwd()[:-5] + 'data/RvR.csv')
-    # generate_data('random', RandAgent(chess.WHITE), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/RvA.csv')
-    # generate_data('minimax2', MiniMaxAgent(chess.WHITE, combined, 2), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/MvA.csv')
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvA.csv')
+    # Base
+    generate_data('random', RandAgent(chess.WHITE), 'random', RandAgent(chess.BLACK), getcwd()[:-5] + 'data/RvR.csv')
+    generate_data('random', RandAgent(chess.WHITE), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/RvA2.csv')
+    generate_data('minimax2', MiniMaxAgent(chess.WHITE, combined, 2), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/M2vA2.csv')
+    generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2.csv')
 
-    # # transposition table
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvAT.csv')
-    # # depth
-    # generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A1vA2.csv')
-    # generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A1vA3.csv')
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A2vA3.csv')
+    # Transposition Tables
+    generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2T.csv')
 
-    # not run
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvH.csv')
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvP.csv')
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/AvC.csv')
-    # generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/HvH.csv')
-    # generate_data('pv2', PVAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/PvP.csv')
-    # generate_data('combined2', CombinedAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/CvC.csv')
+    # History tables
+    generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/H2vH2.csv')
+    generate_data('pv2', PVAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/P2vP2.csv')
+    generate_data('combined2', CombinedAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/C2vC2.csv')
+
+    # Depth
+    generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A1vA2.csv')
+    generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A1vA3.csv')
+    generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A2vA3.csv')
 
 
 if __name__ == '__main__':
