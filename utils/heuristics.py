@@ -6,6 +6,7 @@ from typing import Dict, List
 import collections
 import random
 from utils.state_identifier import eval_boardstate
+from utils.trans_table_utils import *
 
 
 def piece_value_heuristic(board: Board, color: bool, max_turn) -> int:
@@ -37,7 +38,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
     if piece is None:
         return 0
 
-    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 100}
+    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 0}
 
     value = 0
 
@@ -189,7 +190,19 @@ def sort_non_captures(history, turn, moves, board):
     return [m['move'] for m in sorted_non_caps]
 
 
-def get_possible_moves(board, turn, pv_line, current_depth, history=None):
+def get_hashed_moves(moves, board, hash_table):
+    hashed_list = []
+    for m in moves:
+        board.push(m)
+        h = hash_(board)
+        if hash_table.get(h) is not None:
+            hashed_list.append({'move': m, 'val': hash_table[h]})
+        board.pop()
+
+    return [x['move'] for x in sorted(hashed_list, key=lambda x:x['val'], reverse=True)]
+
+
+def get_possible_moves(board, turn, pv_line, current_depth, history=None, trans_table=None):
     """
     returns a list of possible moves that can be made by the agent
     uses mvvlva and history table for move ordering
@@ -210,8 +223,7 @@ def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     if len(pv_line) > current_depth+1:
         pv = [pv_line[current_depth+1]] if pv_line[current_depth+1] in legal_moves else []
 
-
-
+    hashed = get_hashed_moves(legal_moves, board, trans_table) if trans_table is not None else []
 
     # Get sorted capture moves:
     captures = capture_moves(board, turn)
@@ -222,7 +234,7 @@ def get_possible_moves(board, turn, pv_line, current_depth, history=None):
     # sort non_captures with HH:
     sorted_non_caps = sort_non_captures(history, turn, non_captures, board) if history is not None else []
 
-    move_list = pv + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
+    move_list = pv + hashed + captures['winning'] + captures['neutral'] + sorted_non_caps + captures['losing']
 
     return move_list
 

@@ -10,7 +10,7 @@ class AlphaBetaAgentTrans(BaseAgent):
         super().__init__(color)
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
-        self.trans_table = ttu.read_trans_table(getcwd() + '/data/alpha_beta/trans_table.pickle')
+        self.trans_table = ttu.read_trans_table(getcwd() + '/data/alpha_beta_agent/trans_table.pickle')
 
     def get_move(self, board):
         current_depth = 0
