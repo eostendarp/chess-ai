@@ -2,6 +2,11 @@
 
 This project is a joint effort between [Erich Ostendarp](https://github.com/eostendarp), [Sean McQuillan](https://github.com/mcquill99), [Tim Clerico](https://github.com/tclerico), and [Damion Lance](https://github.com/damionlance) to create an AI that could perform reasonably well in the game of chess. We focused on an expert driven approach, splitting up responsibilities between the four of us. This project was part of an AI course taken Fall semester 2019.
 
+# Environment:
+
+  The chess game environment that we worked in is all thanks to the [python-chess](https://python-chess.readthedocs.io/en/latest/) library and is required for the code to run.
+ 
+
 # Features:
 
 ### Tim: 
@@ -55,12 +60,7 @@ This project is a joint effort between [Erich Ostendarp](https://github.com/eost
     https://web.archive.org/web/20070822204038/http://www.seanet.com/~brucemo/topics/zobrist.htm for implementation details on Transposition Tables using Zobrist Hashing
     
    Both of these datastructures are useful in speeding up board evaluation of turn based games, but the underlying concept of using a hash table to cache calculated values for later access and incremental update can be used in almost any intelligent agent 
-
-
-# Environment:
-
-  The chess game environment that we worked in is all thanks to the [python-chess](https://python-chess.readthedocs.io/en/latest/) library and is required for the code to run.
-  
+ 
   
 # Data:
 
