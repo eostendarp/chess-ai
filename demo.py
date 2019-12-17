@@ -15,11 +15,11 @@ def main():
 
     depth = 0
     if diff == "1":
-        depth = 2
+        depth = 1
     elif diff == "2":
-        depth = 3
+        depth = 2
     elif diff == "3":
-        depth = 4
+        depth = 3
 
     demo_human_agent = HumanAgent(True)
     demo_opponent_agent = OrderedAgentTrans(False, combined, depth, load_hh=True)
