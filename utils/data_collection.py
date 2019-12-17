@@ -2,6 +2,8 @@ import chess
 from datetime import datetime
 from tqdm import tqdm
 from os import getcwd
+from utils.trans_table_utils import *
+from utils.history_utils import *
 
 from utils.heuristics import combined
 
@@ -13,6 +15,7 @@ from agents.minimax_agent import MiniMaxAgent
 from agents.pv_agent import PVAgent
 from agents.random_agent import RandAgent
 from agents.random_agent_trans import RandAgentTrans
+from agents.history_agent_trans import OrderedAgentTrans
 
 
 class ChessGame:
@@ -81,6 +84,10 @@ def generate_data(white_agent_name, black_agent_name, white_agent, black_agent, 
             f.write(str(g_n) + '\t' + g['white_agent_name'] + '\t' + 'white' + '\t' + g['white_agent_depth'] + '\t' + g['white_agent_num_moves'] + '\t' + g['white_agent_decision_time'] + '\t' + g['white_agent_result'] + '\n')
             f.write(str(g_n) + '\t' + g['black_agent_name'] + '\t' + 'black' + '\t' + g['black_agent_depth'] + '\t' + g['black_agent_num_moves'] + '\t' + g['black_agent_decision_time'] + '\t' + g['black_agent_result'] + '\n')
 
+            # TODO: This is stupid hard-coded. Remove this you dummies. Love you
+            write_trans_table(black_agent.trans_table, getcwd()[:-5] + 'data/history_agent/trans_table.pickle')
+            write_history_table(black_agent)
+
 
 def main():
     # Base
@@ -93,7 +100,7 @@ def main():
     # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2T_1.csv', 300)
 
     # History tables
-    generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2, True), getcwd()[:-5] + 'data/H2vH2.csv')
+    # generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2, True), getcwd()[:-5] + 'data/H2vH2.csv')
     # generate_data('pv2', PVAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/P2vP2.csv')
     # generate_data('combined2', CombinedAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/C2vC2.csv')
 
@@ -103,22 +110,26 @@ def main():
     # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A2vA3.csv')
 
 
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_1', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_2', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_3', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_4', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_5', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_6', 300)
-    generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_7', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_1', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_2', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_3', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_4', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_5', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_6', 300)
+    # generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_7', 300)
+    #
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_1', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_2', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_3', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_4', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_5', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_6', 300)
+    # generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_7', 300)
 
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_1', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_2', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_3', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_4', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_5', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_6', 300)
-    generate_data('greedy', AlphaBetaAgent(chess.WHITE, combined, 1), 'greedy_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 1), getcwd()[:-5] + 'data/AvAT_7', 300)
-
+    agent1, agent2 = [OrderedAgent(chess.WHITE, combined, 2), OrderedAgentTrans(chess.BLACK, combined, 3)]
+    generate_data('ordered_history2', agent1, 'ordered_history2_trans', agent2, getcwd()[:-5] + 'data/H2vHT2.csv', 120)
+    write_trans_table(agent2.trans_table, getcwd()[:-5] + 'data/history_agent/trans_table.pickle')
+    write_history_table(agent2)
 
 
 if __name__ == '__main__':
