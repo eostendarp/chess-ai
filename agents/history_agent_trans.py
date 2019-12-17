@@ -14,11 +14,11 @@ class OrderedAgentTrans(BaseAgent):
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
         self.history = self.init_history(load_hh=load_hh)
-        self.trans_table = ttu.read_trans_table(os.getcwd()[:-6] + '/data/history_agent/trans_table.pickle')
+        self.trans_table = ttu.read_trans_table(os.getcwd() + '/data/history_agent/trans_table.pickle')
 
     def init_history(self, load_hh):
         if load_hh:
-            table = read_in_history_table(os.getcwd()[:-6] + "/data/history_table.json")
+            table = read_in_history_table(os.getcwd() + "/data/history_table.json")
         else:
             pieces = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING]
             values = {}

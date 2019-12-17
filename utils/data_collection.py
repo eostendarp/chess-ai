@@ -90,7 +90,7 @@ def generate_data(white_agent_name, black_agent_name, white_agent, black_agent, 
             f.write(str(g_n) + '\t' + g['black_agent_name'] + '\t' + 'black' + '\t' + g['black_agent_depth'] + '\t' + g['black_agent_num_moves'] + '\t' + g['black_agent_decision_time'] + '\t' + g['black_agent_result'] + '\n')
 
             # TODO: This is stupid hard-coded. Remove this you dummies. Love you
-            write_trans_table(black_agent.trans_table, getcwd()[:-5] + 'data/history_agent/trans_table.pickle')
+            write_trans_table(black_agent.trans_table, getcwd() + '/data/history_agent/trans_table.pickle')
             write_history_table(black_agent)
 
 

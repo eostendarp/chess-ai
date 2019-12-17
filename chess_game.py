@@ -15,6 +15,8 @@ from agents.combined_agent import CombinedAgent
 from agents.combined_agent_trans import CombinedAgentTrans
 from agents.history_agent_trans import OrderedAgentTrans
 from agents.random_agent import RandAgent
+from agents.history_agent import OrderedAgent
+from utils.data_collection import *
 
 
 class ChessGame:
@@ -47,12 +49,12 @@ class ChessGame:
     def play_round(self, display_move=False):
         start = datetime.utcnow()
 
-        if display_move:
-            print(str(self.board.unicode(borders=True)) + "\n")
-
         self.play_move(self.agent1)
         self.total_move_times[self.agent1.color] += (datetime.utcnow() - start).total_seconds()
         self.moves_made[self.agent1.color] += 1
+
+        if display_move:
+            print(str(self.board.unicode(borders=True)) + "\n")
 
         start = datetime.utcnow()
         self.play_move(self.agent2)
@@ -116,10 +118,7 @@ def capture_test():
 
 def run():
     print("Comparing Agents")
-    agent1, agent2 = [OrderedAgentTrans(True, tapered_evaluation, 3), RandAgent(False)]
-    tally, avg = compare_agents(agent1, agent2, 1, True)
-    #ttu.write_trans_table(agent1.trans_table, getcwd() + '/data/combined_agent/trans_table.pickle')
-    print(tally)
-    print("Average Decision Times:", avg)
+    agent1, agent2 = [OrderedAgentTrans(False, combined, 3, load_hh=True), RandAgent(True)]
+    generate_data('Orderd', agent2, 'ordered_trans', agent1, getcwd() + '/data/HT2vH2.csv', 50, display=True)
 
-run()
+#run()
