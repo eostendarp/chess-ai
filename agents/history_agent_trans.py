@@ -14,11 +14,11 @@ class OrderedAgentTrans(BaseAgent):
         self.heuristic = heuristic
         self.maximum_depth = maximum_depth
         self.history = self.init_history(load_hh=load_hh)
-        self.trans_table = ttu.read_trans_table(os.getcwd() + '/data/history_agent/trans_table.pickle')
+        self.trans_table = ttu.read_trans_table(os.getcwd()[:-6] + '/data/history_agent/trans_table.pickle')
 
     def init_history(self, load_hh):
         if load_hh:
-            table = read_in_history_table(os.getcwd()+"/data/history_table.json")
+            table = read_in_history_table(os.getcwd()[:-6] + "/data/history_table.json")
         else:
             pieces = [PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING]
             values = {}
@@ -35,7 +35,7 @@ class OrderedAgentTrans(BaseAgent):
         current_depth = 0
         # possible_moves = [move for move in board.legal_moves]
         # shuffle(possible_moves)
-        possible_moves = get_possible_moves(board, self.color, [], 0, history=self.history)
+        possible_moves = get_possible_moves(board, self.color, [], 0, history=self.history, trans_table=self.trans_table)
         best_move = None
         best_score = float('-inf')
 
@@ -46,10 +46,9 @@ class OrderedAgentTrans(BaseAgent):
                 return move
 
             h = ttu.hash_(board)
-            score = self.trans_table.get(h)
-            if score is None:
-                score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1, self.maximum_depth)
-                self.trans_table[h] = score
+            score = self.alpha_beta(board, self.heuristic, float('-inf'), float('inf'), False, current_depth + 1, self.maximum_depth)
+            self.trans_table[h] = score
+
             board.pop()
 
             if score > best_score:
@@ -64,12 +63,7 @@ class OrderedAgentTrans(BaseAgent):
         if current_depth == maximum_depth or board.is_game_over():
             return heuristic(board, self.color, max_turn)
 
-        captures = mvvlva(board, self.color)
-        # moves = [move for move in board.legal_moves if move not in captures]
-        # shuffle(moves)
-        # possible_moves = captures + moves
-
-        possible_moves = get_possible_moves(board, max_turn, [], 0, history=self.history)
+        possible_moves = get_possible_moves(board, max_turn, [], 0, history=self.history, trans_table=self.trans_table)
 
         best_score = float('-inf') if max_turn else float('inf')
         for move in possible_moves:
