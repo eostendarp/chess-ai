@@ -23,13 +23,16 @@ class HumanAgent(BaseAgent):
         while not is_valid_move:
             move = input("Enter a valid move in uci format: ").lower()
             if len(move) == 4 or len(move) == 5:
-                player_move = chess.Move.from_uci(move)
+                try:
+                    player_move = chess.Move.from_uci(move)
 
-                if board.is_legal(player_move):
-                    try:
-                        board.push(player_move)
-                        return player_move
-                    except:
-                        print("invalid move...")
+                    if board.is_legal(player_move):
+                        try:
+                            board.push(player_move)
+                            return player_move
+                        except:
+                            print("invalid move...")
+                except:
+                    print("invalid move...")
             else:
                 print("invalid move...")
