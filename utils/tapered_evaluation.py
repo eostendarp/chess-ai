@@ -15,7 +15,7 @@ def tapered_evaluation(board, color, max_turn):
     endgame_score = _endgame_eval(board, color)
     phase = _phase(board)
     eval_ = ((middlegame_score * (256 - phase)) + (endgame_score * phase)) / 256
-
+    #print(f"phase: {phase} eval: {eval_}")
     return eval_
 
 def _phase(board):
@@ -44,11 +44,12 @@ def _phase(board):
 
 def _middlegame_eval(board, color):
     eval_score = 0
-    eval_score += utils.heuristics.piece_value_heuristic(board, color, None)
+    eval_score += utils.heuristics.piece_value_heuristic(board, color, None) * 10
     eval_score += (_pawns_mg(board, color) - _pawns_mg(board, not color))
     eval_score += (_pieces_mg(board, color) - _pieces_mg(board, not color))
     eval_score += (_mobility(board, color) - _mobility(board, not color))
     eval_score += (_threats_mg(board, color) - _threats_mg(board, not color))
+    #print(f"middlegame: {eval_score}")
     return eval_score
 
 def _pawns_mg(board, color):
@@ -83,7 +84,7 @@ def _threats_mg(board, color):
     eval_score = 0
     for tile in range(0, board_size):
         eval_score += 65 if _hanging(board, color, tile) else 0
-        eval_score += 120 if _threat_safe_pawn(board, color, tile) else 0
+        eval_score += 50 if _threat_safe_pawn(board, color, tile) else 0
 
     return eval_score
 
@@ -171,7 +172,7 @@ def _mobility(board, color):
         num_moves = move_count[move]
         mobility_score += num_moves * piece_mobility_values[piece.piece_type]
 
-    return mobility_score
+    return mobility_score * .33
 
 # Pieces Heuristics
 def _outpost_pieces(board, color, square):
@@ -337,11 +338,12 @@ def _attacked_by_pawn(board, color, square):
 
 def _endgame_eval(board, color):
     eval_score = 0
-    eval_score += utils.heuristics.piece_value_heuristic(board, color, None)
+    eval_score += utils.heuristics.piece_value_heuristic(board, color, None) * 10
     eval_score += (_pawns_eg(board, color) - _pawns_eg(board, not color))
     eval_score += (_pieces_eg(board, color) - _pieces_eg(board, not color))
     eval_score += (_mobility(board, color) - _mobility(board, not color))
     eval_score += (_threats_eg(board, color) - _threats_eg(board, not color))
+    #print(f"endgame: {eval_score}")
     return eval_score
 
 def _pawns_eg(board, color):
