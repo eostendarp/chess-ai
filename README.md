@@ -62,6 +62,13 @@ This project is a joint effort between [Erich Ostendarp](https://github.com/eost
   The chess game environment that we worked in is all thanks to the [python-chess](https://python-chess.readthedocs.io/en/latest/) library and is required for the code to run.
   
   
+# Data:
+
+![a2va2t](https://github.com/eostendarp/chess-ai/blob/master/data/Rplots/A2vA2T.jpeg)
+
+![a2va3](https://github.com/eostendarp/chess-ai/blob/master/data/Rplots/grouped_A2vA3.jpeg)
+  
+  
 # Run Yourself:
 
   Clone the repository, setup you virtual envionment and **pip install python-chess**
