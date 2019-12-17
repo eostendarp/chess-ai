@@ -58,7 +58,7 @@ class OrderedAgent(BaseAgent):
         if current_depth == maximum_depth or board.is_game_over():
             return heuristic(board, self.color, max_turn)
 
-        captures = mvvlva(board, self.color)
+        # captures = mvvlva(board, self.color)
         # moves = [move for move in board.legal_moves if move not in captures]
         # shuffle(moves)
         # possible_moves = captures + moves
