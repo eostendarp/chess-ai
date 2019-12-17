@@ -4,99 +4,68 @@
 library(dplyr)
 library(ggplot2)
 
-# read data
-rvr <- read.csv('data/RvR.csv', sep='\t')
-ava <- read.csv('data/AvA.csv', sep='\t')
-rva <- read.csv('data/RvA.csv', sep='\t')
-mva <- read.csv('data/MvA.csv', sep='\t')
+# Baseline
+RvR <- read.csv('data/RvR.csv', sep='\t')
+ggplot(RvR, aes(x=game_number, y=agent_decision_time)) +
+  geom_point(aes(color=agent_color)) +
+  ggtitle("Random Agent Vs. Random Agent") +
+  labs(x="Game Number", y="Decision Time", color="Agent Type") +
+  scale_color_manual(labels=c("Black Random Agent", "White Random Agent"), values=c("#F8766D", "#00BFC4"))
 
-# avh <- read.csv('data/AvH', sep='\t')
-# avp <- read.csv('data/AvP', sep='\t')
-# avc <- read.csv('data/AvC', sep='\t')
-# hvh <- read.csv('data/HvH', sep='\t')
-# pvp <- read.csv('data/PvP', sep='\t')
-# cvc <- read.csv('data/CvC', sep='\t')
+A2vA2 <- read.csv('data/A2vA2.csv', sep='\t')
+ggplot(A2vA2, aes(x=game_number, y=agent_decision_time)) +
+  geom_point(aes(color=agent_color)) +
+  ggtitle("AlphaBeta Depth 2 Vs. AlphaBeta Depth 2") +
+  labs(x="Game Number", y="Decision Time", color="Agent Type") +
+  scale_color_manual(labels=c("Black AlphaBeta Depth 2", "White AlphaBeta Depth 2"), values=c("#F8766D", "#00BFC4"))
 
-print('color win rate')
+H2vH2 <- read.csv('data/H2vH2.csv', sep='\t')
+ggplot(H2vH2, aes(x=game_number, y=agent_decision_time)) +
+  geom_point(aes(color=agent_color)) +
+  ggtitle("History Depth 2 Vs. History Depth 2") +
+  labs(x="Game Number", y="Decision Time", color="Agent Type") +
+  scale_color_manual(labels=c("Black History Depth 2", "White History Depth 2"), values=c("#F8766D", "#00BFC4"))
 
-print('white random agent:')
-sum(filter(rvr, agent_color=='white' & game_result==1)$game_result) / 100
-print('black random agent:')
-sum(filter(rvr, agent_color=='black' & game_result==1)$game_result) / 100
+P2vP2 <- read.csv('data/P2vP2.csv', sep='\t')
+ggplot(P2vP2, aes(x=game_number, y=agent_decision_time)) +
+  geom_point(aes(color=agent_color)) +
+  ggtitle("Principle-Variation Depth 2 Vs. Principle-Variation Depth 2") +
+  labs(x="Game Number", y="Decision Time", color="Agent Type") +
+  scale_color_manual(labels=c("Black Principle-Variation Depth 2", "White Principle-Variation Depth 2"), values=c("#F8766D", "#00BFC4"))
 
-print('white alphabeta agent:')
-sum(filter(mva, agent_color=='white' & game_result==1)$game_result) / 100
-print('black alphabeta agent:')
-sum(filter(mva, agent_color=='black' & game_result==1)$game_result) / 100
-
-
-print('agent win rate')
-
-print('white random agent:')
-sum(filter(rva, agent_type=='random' & game_result==1)$game_result) / 100
-print('black alphabeta agent:')
-sum(filter(rva, agent_type=='alphabeta' & game_result==1)$game_result) / 100
-
-print('white minimax agent:')
-sum(filter(mva, agent_type=='minimax' & game_result==1)$game_result) / 100
-print('black alphabeta agent:')
-sum(filter(mva, agent_type=='alphabeta' & game_result==1)$game_result) / 100
+C2vC2 <- read.csv('data/C2vC2.csv', sep='\t')
+ggplot(C2vC2, aes(x=game_number, y=agent_decision_time)) +
+  geom_point(aes(color=agent_color)) +
+  ggtitle("Combined Depth 2 Vs. Combined Depth 2") +
+  labs(x="Game Number", y="Decision Time", color="Agent Type") +
+  scale_color_manual(labels=c("Black Combined Depth 2", "White Combined Depth 2"), values=c("#F8766D", "#00BFC4"))
 
 
-# check data for anomalies
-ggplot(rvr, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
-ggplot(ava, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
-
-ggplot(rva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
-ggplot(mva, aes(x=game_number, y=agent_decision_time, color=agent_type)) + geom_point()
-
-
-# decision times
-
-# color
-ggplot(rvr, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
-ggplot(ava, aes(x=agent_decision_time, fill=agent_color)) + geom_histogram() + facet_wrap(~agent_color)
-
-# agent
-ggplot(rva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
-ggplot(mva, aes(x=agent_decision_time, fill=agent_type)) + geom_histogram() + facet_wrap(~agent_type)
-
-
-# Different distributions of moves for different agents
-ggplot(rvr, aes(x=agent_num_moves)) + geom_histogram()
-ggplot(ava, aes(x=agent_num_moves)) + geom_histogram()
-
-
-# decision time vs. wins
-ggplot(mva, aes(x=game_result, y=agent_decision_time, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
-
-
-# num moves vs. wins
-ggplot(rvr, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
-ggplot(ava, aes(x=game_result, y=agent_num_moves)) + geom_histogram(stat='identity')
-
-ggplot(mva, aes(x=game_result, y=agent_num_moves, fill=agent_type)) + geom_histogram(stat='identity') + facet_wrap(~agent_type)
-
-
-# num moves vs. decision time
-ggplot(rvr, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
-ggplot(ava, aes(x=agent_num_moves, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
-
-ggplot(rva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
-ggplot(mva, aes(x=agent_num_moves, y=agent_decision_time, color=agent_type)) + geom_point() + geom_smooth()
-
+# Depth Performance
+A1vA2 <- read.csv('data/A1vA2.csv', sep='\t')
+A1vA3 <- read.csv('data/A1vA3.csv', sep='\t')
+A2vA3 <- read.csv('data/A2vA3.csv', sep='\t')
 
 # Transposition Tables
-avat <- read.csv('data/AvAT.csv', sep='\t')
-ggplot(avat, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point() + geom_smooth()
+A2vA2T_1 <- read.csv('data/A2vA2T_1.csv', sep='\t')
+A2vA2T_2 <- read.csv('data/A2vA2T_2.csv', sep='\t')
+A2vA2T_3 <- read.csv('data/A2vA2T_3.csv', sep='\t')
+A2vA2T_4 <- read.csv('data/A2vA2T_4.csv', sep='\t')
+A2vA2T_5 <- read.csv('data/A2vA2T_5.csv', sep='\t')
+A2vA2T_6 <- read.csv('data/A2vA2T_6.csv', sep='\t')
+A2vA2T_7 <- read.csv('data/A2vA2T_7.csv', sep='\t')
+A2vA2T <- rbind(A2vA2T_1, A2vA2T_2, A2vA2T_3, A2vA2T_4, A2vA2T_5, A2vA2T_6, A2vA2T_7)
 
+grouped_A2vA2T <- group_by(A2vA2T, game_number, agent_type) %>%
+  summarise(mean_agent_decision_time=mean(agent_decision_time))
 
-# Different Depths
-a1va2 <- read.csv('data/A1vA2.csv', sep='\t')
-ggplot(a1va2, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+ggplot(grouped_A2vA2T, aes(x=game_number, y=mean_agent_decision_time)) +
+  geom_point(aes(color=agent_type)) +
+  geom_smooth(aes(color=agent_type)) +
+  ggtitle("Average Decision Time and Game Number") +
+  labs(x="Game Number", y="Average Decision Time (Seconds)", color="Agent Type") +
+  scale_color_manual(labels=c("AlphaBeta Depth 2", "AlphaBeta Depth 2 w/\nTransposition Tables"), values=c("#F8766D", "#00BFC4"))
 
-a1va3 <- read.csv('data/A1vA3.csv', sep='\t')
-ggplot(a1va3, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
-
-a2va3 <- read.csv('data/A2vA3.csv', sep='\t')
-ggplot(a2va3, aes(x=game_number, y=agent_decision_time, color=agent_color)) + geom_point()
+# Performance
+M2vA2 <- read.csv('data/M2vA2.csv', sep='\t')
+RvA2 <- read.csv('data/RvA2.csv', sep='\t')

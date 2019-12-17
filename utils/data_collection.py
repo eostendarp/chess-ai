@@ -93,14 +93,14 @@ def main():
     # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2T_1.csv', 300)
 
     # History tables
-    # generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/H2vH2.csv')
-    # generate_data('pv2', PVAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/P2vP2.csv')
-    # generate_data('combined2', CombinedAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/C2vC2.csv')
+    generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/H2vH2.csv')
+    generate_data('pv2', PVAgent(chess.WHITE, combined, 2), 'pv2', PVAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/P2vP2.csv')
+    generate_data('combined2', CombinedAgent(chess.WHITE, combined, 2), 'combined2', CombinedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/C2vC2.csv')
 
     # Depth
-    # generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A1vA2.csv')
-    # generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A1vA3.csv')
-    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A2vA3.csv')
+    generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A1vA2.csv')
+    generate_data('alphabeta1', AlphaBetaAgent(chess.WHITE, combined, 1), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A1vA3.csv')
+    generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta3', AlphaBetaAgent(chess.BLACK, combined, 3), getcwd()[:-5] + 'data/A2vA3.csv')
 
 
     generate_data('random', RandAgent(chess.WHITE), 'random_trans', RandAgentTrans(chess.BLACK), getcwd()[:-5] + 'data/RvRT_1', 300)
