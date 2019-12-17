@@ -37,7 +37,7 @@ def get_piece_value(piece: Piece, color: bool) -> int:
     if piece is None:
         return 0
 
-    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 100}
+    piece_values: Dict[str, int] = {"P": 1, "N": 3, "B": 3, "R": 5, "Q": 9, "K": 0}
 
     value = 0
 
