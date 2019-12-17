@@ -32,6 +32,8 @@ class HumanAgent(BaseAgent):
                             return player_move
                         except:
                             print("invalid move...")
+                    else:
+                        print("invalid move...")
                 except:
                     print("invalid move...")
             else:
