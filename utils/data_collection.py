@@ -89,7 +89,7 @@ def main():
     generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2', AlphaBetaAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2.csv')
 
     # Transposition Tables
-    generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2T_4.csv', 300)
+    # generate_data('alphabeta2', AlphaBetaAgent(chess.WHITE, combined, 2), 'alphabeta2_trans', AlphaBetaAgentTrans(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/A2vA2T_3.csv', 300)
 
     # History tables
     generate_data('history2', OrderedAgent(chess.WHITE, combined, 2), 'history2', OrderedAgent(chess.BLACK, combined, 2), getcwd()[:-5] + 'data/H2vH2.csv')
