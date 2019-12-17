@@ -66,6 +66,8 @@ This project is a joint effort between [Erich Ostendarp](https://github.com/eost
 
 ![a2va2t](https://github.com/eostendarp/chess-ai/blob/master/data/Rplots/A2vA2T.jpeg)
 
+![RvA](https://github.com/eostendarp/chess-ai/blob/master/data/Rplots/grouped_RvA2.jpeg)
+
 ![a2va3](https://github.com/eostendarp/chess-ai/blob/master/data/Rplots/grouped_A2vA3.jpeg)
   
   
