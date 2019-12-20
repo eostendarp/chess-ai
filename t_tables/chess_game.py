@@ -77,8 +77,8 @@ def generate_data(white_agent_name, black_agent_name, white_agent, black_agent, 
 
         for g_n in tqdm(range(num_runs)):
             g = ChessGame(white_agent_name, black_agent_name, white_agent, black_agent).play_game()
-            f.write(str(g_n) + ', ' + g['white_agent_name'] + ', ' + 'white' + ', ' + g['white_agent_decision_time'] + '\n')
-            f.write(str(g_n) + ', ' + g['black_agent_name'] + ', ' + 'black' + ', ' + g['black_agent_decision_time'] + '\n')
+            f.write(str(g_n) + ', _' + g['white_agent_name'] + ', _' + 'white_' + ', _' + g['white_agent_decision_time'] + '\n')
+            f.write(str(g_n) + ', _' + g['black_agent_name'] + ', _' + 'black_' + ', _' + g['black_agent_decision_time'] + '\n')
 
 
 from t_tables.minimax import Minimax
@@ -107,24 +107,24 @@ from t_tables._random_trie import RandomTrie
 
 
 def main():
-    for i in tqdm(range(1, 6)):
-        generate_data('random', Random(chess.WHITE), 'random_avl', RandomAVL(chess.BLACK), 'data/random_avl' + str(i) + '.csv', 500)
-        generate_data('random', Random(chess.WHITE), 'random_hash', RandomHash(chess.BLACK), 'data/random_hash' + str(i) + '.csv', 500)
-        generate_data('random', Random(chess.WHITE), 'random_rb', RandomRB(chess.BLACK), 'data/random_rb' + str(i) + '.csv', 500)
-        generate_data('random', Random(chess.WHITE), 'random_splay', RandomSplay(chess.BLACK), 'data/random_splay' + str(i) + '.csv', 500)
-        generate_data('random', Random(chess.WHITE), 'random_trie', RandomTrie(chess.BLACK), 'data/random_trie' + str(i) + '.csv', 500)
+    for i in range(1, 6):
+        generate_data('random', Random(chess.WHITE), 'random_avl', RandomAVL(chess.BLACK), 'data/random_avl_' + str(i) + '.csv', 500)
+        generate_data('random', Random(chess.WHITE), 'random_hash', RandomHash(chess.BLACK), 'data/random_hash_' + str(i) + '.csv', 500)
+        generate_data('random', Random(chess.WHITE), 'random_rb', RandomRB(chess.BLACK), 'data/random_rb_' + str(i) + '.csv', 500)
+        generate_data('random', Random(chess.WHITE), 'random_splay', RandomSplay(chess.BLACK), 'data/random_splay_' + str(i) + '.csv', 500)
+        generate_data('random', Random(chess.WHITE), 'random_trie', RandomTrie(chess.BLACK), 'data/random_trie_' + str(i) + '.csv', 500)
 
-        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_avl', MinimaxAVL(chess.BLACK, combined, 1), 'data/minimax_avl' + str(i) + '.csv', 500)
-        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_hash', MinimaxHash(chess.BLACK, combined, 1), 'data/minimax_hash' + str(i) + '.csv', 500)
-        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_rb', MinimaxRB(chess.BLACK, combined, 1), 'data/minimax_rb' + str(i) + '.csv', 500)
-        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_splay', MinimaxSplay(chess.BLACK, combined, 1), 'data/minimax_splay' + str(i) + '.csv', 500)
-        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_trie', MinimaxTrie(chess.BLACK, combined, 1), 'data/minimax_trie' + str(i) + '.csv', 500)
+        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_avl', MinimaxAVL(chess.BLACK, combined, 1), 'data/minimax_avl_' + str(i) + '.csv', 500)
+        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_hash', MinimaxHash(chess.BLACK, combined, 1), 'data/minimax_hash_' + str(i) + '.csv', 500)
+        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_rb', MinimaxRB(chess.BLACK, combined, 1), 'data/minimax_rb_' + str(i) + '.csv', 500)
+        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_splay', MinimaxSplay(chess.BLACK, combined, 1), 'data/minimax_splay_' + str(i) + '.csv', 500)
+        generate_data('minimax', Minimax(chess.WHITE, combined, 1), 'minimax_trie', MinimaxTrie(chess.BLACK, combined, 1), 'data/minimax_trie_' + str(i) + '.csv', 500)
 
-        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_avl', AlphaBetaAVL(chess.BLACK, combined, 1), 'data/alpha_beta_avl' + str(i) + '.csv', 500)
-        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_hash', AlphaBetaHash(chess.BLACK, combined, 1), 'data/alpha_beta_hash' + str(i) + '.csv', 500)
-        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_rb', AlphaBetaRB(chess.BLACK, combined, 1), 'data/alpha_beta_rb' + str(i) + '.csv', 500)
-        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_splay', AlphaBetaSplay(chess.BLACK, combined, 1), 'data/alpha_beta_splay' + str(i) + '.csv', 500)
-        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_trie', AlphaBetaTrie(chess.BLACK, combined, 1), 'data/alpha_beta_trie' + str(i) + '.csv', 500)
+        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_avl', AlphaBetaAVL(chess.BLACK, combined, 1), 'data/alpha_beta_avl_' + str(i) + '.csv', 500)
+        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_hash', AlphaBetaHash(chess.BLACK, combined, 1), 'data/alpha_beta_hash_' + str(i) + '.csv', 500)
+        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_rb', AlphaBetaRB(chess.BLACK, combined, 1), 'data/alpha_beta_rb_' + str(i) + '.csv', 500)
+        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_splay', AlphaBetaSplay(chess.BLACK, combined, 1), 'data/alpha_beta_splay_' + str(i) + '.csv', 500)
+        generate_data('alpha_beta', AlphaBeta(chess.WHITE, combined, 1), 'alpha_beta_trie', AlphaBetaTrie(chess.BLACK, combined, 1), 'data/alpha_beta_trie_' + str(i) + '.csv', 500)
 
 
 if __name__ == '__main__':
